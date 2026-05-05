@@ -1,10 +1,3 @@
-# GitHub Copilot Instructions — SharedSubscriptions
-
-Coloca este archivo en `.github/copilot-instructions.md` en la raíz del repositorio.
-Copilot lo leerá automáticamente en cada sesión de Visual Studio / VS Code.
-
----
-
 ## 1. Visión general del producto
 
 **SharedSubscriptions** es una plataforma SaaS para gestionar suscripciones digitales compartidas (Netflix, Spotify, Disney+, etc.) entre grupos de amigos o familias. Resuelve el problema cotidiano de saber quién debe pagar qué cada mes, eliminando el caos de mensajes de WhatsApp.
