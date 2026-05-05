@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/services/" />
+  <Folder Name="/services/Groups/">
+    <Project Path="services/Groups/Groups.Api/Groups.Api.csproj" />
+    <Project Path="services/Groups/Groups.Application/Groups.Application.csproj" />
+    <Project Path="services/Groups/Groups.Domain/Groups.Domain.csproj" />
+    <Project Path="services/Groups/Groups.Infrastructure/Groups.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/shared/" />
+  <Folder Name="/shared/SharedKernel/">
+    <Project Path="shared/SharedKernel/SharedSubscriptions.SharedKernel/SharedSubscriptions.SharedKernel.csproj" />
+  </Folder>
+</Solution>
