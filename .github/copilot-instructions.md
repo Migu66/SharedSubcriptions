@@ -212,7 +212,7 @@ Añadir al agregado `Group` los métodos de negocio: `AddMember(UserId, string e
 
 Crear el agregado `Invitation` en la capa Domain. Propiedades: `Id` de tipo `InvitationId` (crear también este strongly-typed ID), `GroupId`, `InviteeEmail` (string), `Status` (enum `InvitationStatus` con valores `Pending`, `Accepted` y `Cancelled`), `CreatedAt` y `ExpiresAt`. Método de fábrica `Create(GroupId, string email, DateTime createdAt, DateTime expiresAt)` que devuelve `Result<Invitation>`. Métodos de negocio `Accept()` y `Cancel()` que devuelven `Result`. Clase estática `InvitationErrors` con los errores correspondientes en español.
 
-#### Fase 2.9 — Interfaz IGroupRepository
+#### Fase 2.9 — Interfaz IGroupRepository ----
 
 Crear la interfaz `IGroupRepository` en la capa Domain. Métodos: `GetByIdAsync(GroupId, CancellationToken)`, `AddAsync(Group, CancellationToken)`, `UpdateAsync(Group, CancellationToken)` y `GetByUserIdAsync(UserId, CancellationToken)` que devuelve `IReadOnlyList<Group>`. Crear también `IInvitationRepository` con `GetByIdAsync`, `AddAsync` y `GetPendingByEmailAsync`. Estas interfaces no tienen implementación en esta fase, solo la definición del contrato.
 
