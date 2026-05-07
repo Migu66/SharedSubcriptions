@@ -192,7 +192,7 @@ Crear el value object `GroupId` en la capa Domain. Es un record inmutable que en
 
 Crear el value object `GroupName` en la capa Domain como record inmutable. El método de fábrica estático `Create(string value)` devuelve `Result<GroupName>`. Las reglas de validación son: el nombre no puede ser nulo ni vacío, debe tener entre 3 y 100 caracteres. Añadir la clase estática `GroupNameErrors` con los errores de dominio correspondientes en español. Este value object no depende de ningún otro tipo del proyecto.
 
-#### Fase 2.4 — Entidad Member
+#### Fase 2.4 — Entidad Member ----
 
 Crear la entidad `Member` dentro de la capa Domain. Representa a un usuario dentro de un grupo. Propiedades: `UserId` (strongly-typed), `Email` (string, solo lectura), `Role` (enum `GroupRole` con valores `Admin` y `Member`), `JoinedAt` (DateTime). La entidad tiene constructor privado vacío para EF Core y método de fábrica estático `Create(UserId, string email, GroupRole, DateTime)` que devuelve `Result<Member>`. No tiene lógica de negocio propia, es controlada por el agregado `Group`.
 

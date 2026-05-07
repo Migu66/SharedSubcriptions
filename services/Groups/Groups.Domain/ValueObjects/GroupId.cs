@@ -1,3 +1,4 @@
+using Groups.Domain.Errors;
 using SharedSubscriptions.SharedKernel.Domain;
 
 namespace Groups.Domain.ValueObjects;
@@ -13,11 +14,4 @@ public record GroupId(Guid Value)
 
         return Result.Success<GroupId>(new GroupId(value));
     }
-}
-
-internal static class GroupIdErrors
-{
-    internal static readonly Error Empty = new(
-        "GroupId.Empty",
-        "El identificador del grupo no puede estar vacío.");
 }
