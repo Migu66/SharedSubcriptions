@@ -184,11 +184,11 @@ Es el segundo porque es el Bounded Context central del negocio. Sin grupo no exi
 
 Crear la solución de carpetas y los cuatro proyectos de la Clean Architecture para el Groups Service: `Groups.Domain`, `Groups.Application`, `Groups.Infrastructure` y `Groups.Api`. Configurar las referencias entre proyectos respetando la regla de dependencias: Domain sin referencias externas, Application referencia Domain, Infrastructure referencia Application y Domain, Api referencia Application. Añadir los cuatro proyectos a la solución principal. En este paso no se escribe ninguna clase de negocio, solo la estructura de carpetas y los archivos `.csproj` con sus dependencias y los paquetes NuGet base de cada capa.
 
-#### Fase 2.2 — Strongly-typed ID: GroupId
+#### Fase 2.2 — Strongly-typed ID: GroupId ----
 
 Crear el value object `GroupId` en la capa Domain. Es un record inmutable que envuelve un `Guid`. Incluye un método de fábrica estático `New()` que genera un nuevo identificador y un método `From(Guid value)` que devuelve `Result<GroupId>` validando que el guid no sea vacío. Registrar la conversión de `GroupId` en EF Core mediante un `ValueConverter` en la capa Infrastructure (se deja preparado aunque aún no existe el DbContext).
 
-#### Fase 2.3 — Value Object: GroupName
+#### Fase 2.3 — Value Object: GroupName ----
 
 Crear el value object `GroupName` en la capa Domain como record inmutable. El método de fábrica estático `Create(string value)` devuelve `Result<GroupName>`. Las reglas de validación son: el nombre no puede ser nulo ni vacío, debe tener entre 3 y 100 caracteres. Añadir la clase estática `GroupNameErrors` con los errores de dominio correspondientes en español. Este value object no depende de ningún otro tipo del proyecto.
 
