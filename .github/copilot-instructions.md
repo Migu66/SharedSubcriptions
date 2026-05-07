@@ -200,11 +200,11 @@ Crear la entidad `Member` dentro de la capa Domain. Representa a un usuario dent
 
 Crear el agregado `Group` en la capa Domain como la clase raíz que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `GroupId`, `Name` de tipo `GroupName`, `AdminId` de tipo `UserId`, `CreatedAt` de tipo `DateTime` y la colección interna privada de `Member` expuesta como `IReadOnlyCollection<Member>`. Constructor privado vacío para EF Core. Método de fábrica estático `Create(GroupName, UserId adminId, DateTime)` que devuelve `Result<Group>` y emite el domain event `GroupCreatedEvent`. En esta fase solo se crea la estructura y el método `Create`, sin los métodos de negocio adicionales.
 
-#### Fase 2.6 — Domain Events del agregado Group
+#### Fase 2.6 — Domain Events del agregado Group ----
 
 Crear los tres domain events que emite el agregado `Group`: `GroupCreatedEvent` (contiene `GroupId` y `UserId adminId`), `MemberAddedEvent` (contiene `GroupId`, `UserId` y `string email`) y `MemberRemovedEvent` (contiene `GroupId` y `UserId`). Todos implementan la interfaz `IDomainEvent` del SharedKernel. Son records inmutables. No tienen lógica, solo transportan datos.
 
-#### Fase 2.7 — Métodos de negocio del agregado Group
+#### Fase 2.7 — Métodos de negocio del agregado Group ----
 
 Añadir al agregado `Group` los métodos de negocio: `AddMember(UserId, string email, DateTime joinedAt)` que devuelve `Result` y emite `MemberAddedEvent`, y `RemoveMember(UserId)` que devuelve `Result` y emite `MemberRemovedEvent`. Añadir la clase estática `GroupErrors` con todos los errores de dominio del agregado: `Group.MemberAlreadyExists`, `Group.MemberNotFound`, `Group.AdminCannotBeRemoved`, `Group.NameRequired`, `Group.NameTooShort` y `Group.NameTooLong`. Los mensajes descriptivos van en español.
 

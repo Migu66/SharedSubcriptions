@@ -21,6 +21,7 @@ public sealed class Group : AggregateRoot<GroupId>
     public static Result<Group> Create(
         GroupName name,
         UserId adminId,
+        string adminEmail,
         DateTime createdAt)
     {
         var group = new Group
@@ -31,7 +32,7 @@ public sealed class Group : AggregateRoot<GroupId>
             CreatedAt = createdAt
         };
 
-        var adminMemberResult = Member.Create(adminId, string.Empty, GroupRole.Admin, createdAt);
+        var adminMemberResult = Member.Create(adminId, adminEmail, GroupRole.Admin, createdAt);
         if (adminMemberResult.IsFailure)
             return Result.Failure<Group>(adminMemberResult.Error);
 
@@ -44,5 +45,47 @@ public sealed class Group : AggregateRoot<GroupId>
             AdminId: adminId));
 
         return Result.Success(group);
+    }
+
+    public Result AddMember(UserId userId, string email, DateTime joinedAt)
+    {
+        bool alreadyExists = _members.Exists(m => m.Id == userId);
+        if (alreadyExists)
+            return Result.Failure(GroupErrors.MemberAlreadyExists);
+
+        var memberResult = Member.Create(userId, email, GroupRole.Member, joinedAt);
+        if (memberResult.IsFailure)
+            return Result.Failure(memberResult.Error);
+
+        _members.Add(memberResult.Value);
+
+        RaiseDomainEvent(new MemberAddedEvent(
+            EventId: Guid.NewGuid(),
+            OccurredOn: joinedAt,
+            GroupId: Id,
+            UserId: userId,
+            Email: email));
+
+        return Result.Success();
+    }
+
+    public Result RemoveMember(UserId userId)
+    {
+        if (userId == AdminId)
+            return Result.Failure(GroupErrors.AdminCannotBeRemoved);
+
+        var member = _members.Find(m => m.Id == userId);
+        if (member is null)
+            return Result.Failure(GroupErrors.MemberNotFound);
+
+        _members.Remove(member);
+
+        RaiseDomainEvent(new MemberRemovedEvent(
+            EventId: Guid.NewGuid(),
+            OccurredOn: DateTime.UtcNow,
+            GroupId: Id,
+            UserId: userId));
+
+        return Result.Success();
     }
 }
