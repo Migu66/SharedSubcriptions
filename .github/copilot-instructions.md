@@ -148,31 +148,31 @@ El lenguaje y runtime es .NET 10 con C# 13. Las APIs usan ASP.NET Core con Minim
 
 Este es el orden exacto en el que se construye el sistema. Cada paso desbloquea el siguiente. Nunca se empieza un servicio sin haber completado los anteriores.
 
-### Fase 1 — SharedKernel
+### Fase 1 — SharedKernel ----
 
 Es lo primero que se construye porque todos los servicios dependen de él. Contiene las clases base abstractas que todo el sistema comparte: la clase base de AggregateRoot con soporte para domain events, la interfaz y clase base de Entity, la clase base de ValueObject, las interfaces IDomainEvent e IIntegrationEvent, la clase Result y Result<T> con el tipo Error, la interfaz IRepository<T> genérica, la interfaz IUnitOfWork, la interfaz IDateTimeProvider y la clase base IntegrationEvent. Hasta que estas clases no existen, no se puede escribir ningún agregado en ningún servicio.
 
-#### Fase 1.1 — Estructura del proyecto SharedKernel
+#### Fase 1.1 — Estructura del proyecto SharedKernel----
 
 Crear el proyecto `SharedKernel` como una Class Library de .NET 10. Añadirlo a la solución principal. Crear la estructura de carpetas interna: `Abstractions`, `Domain`, `Results` y `Events`. En este paso no se escribe ninguna clase, solo la estructura y el `.csproj` sin dependencias externas de ningún tipo.
 
-#### Fase 1.2 — Result pattern: Error, Result y Result<T>
+#### Fase 1.2 — Result pattern: Error, Result y Result<T>----
 
 Crear en la carpeta `Results` el tipo `Error` como record inmutable con propiedades `string Code` y `string Description`. Crear la clase `Result` con propiedades `bool IsSuccess`, `bool IsFailure` y `Error Error`, método de fábrica estático `Success()` y `Failure(Error)`. Crear la clase genérica `Result<T>` que hereda de `Result` con la propiedad `T Value` y métodos de fábrica `Success(T value)` y `Failure(Error)`. Ninguna de estas clases tiene dependencias externas.
 
-#### Fase 1.3 — Interfaces de dominio base
+#### Fase 1.3 — Interfaces de dominio base----
 
 Crear en la carpeta `Domain` las interfaces: `IDomainEvent` (marker interface vacía), `IEntity` con propiedad `Guid Id`. Crear la clase abstracta `Entity` con propiedad `Guid Id` con `protected set`, constructor protegido que acepta `Guid id` y constructor privado vacío para EF Core. Esta clase es la base de todas las entidades del sistema.
 
-#### Fase 1.4 — AggregateRoot con soporte para Domain Events
+#### Fase 1.4 — AggregateRoot con soporte para Domain Events----
 
 Crear la clase abstracta `AggregateRoot` que hereda de `Entity`. Incluye una lista privada `List<IDomainEvent>` expuesta como `IReadOnlyCollection<IDomainEvent> DomainEvents`. Método protegido `RaiseDomainEvent(IDomainEvent domainEvent)` que añade el evento a la lista. Método público `ClearDomainEvents()` que vacía la lista tras su procesamiento. Constructor protegido y constructor privado vacío para EF Core.
 
-#### Fase 1.5 — Integration Events e interfaces de infraestructura
+#### Fase 1.5 — Integration Events e interfaces de infraestructura----
 
 Crear en la carpeta `Events` la interfaz `IIntegrationEvent` (marker interface vacía) y la clase abstracta `IntegrationEvent` con propiedad `Guid Id` generado en el constructor, `DateTime OccurredOnUtc` y `string EventType` con el nombre del tipo concreto. Crear en la carpeta `Abstractions` las interfaces: `IUnitOfWork` con método `Task<int> SaveChangesAsync(CancellationToken)`, `IDateTimeProvider` con propiedad `DateTime UtcNow` e `IRepository<T>` genérica con métodos `GetByIdAsync`, `AddAsync` y `UpdateAsync`.
 
-#### Fase 1.6 — Tests unitarios del SharedKernel
+#### Fase 1.6 — Tests unitarios del SharedKernel----
 
 Crear el proyecto `SharedKernel.Tests` con xUnit y FluentAssertions. Tests para `Result`: creación de resultado exitoso, creación de resultado fallido, verificación de `IsSuccess` e `IsFailure`. Tests para `AggregateRoot`: que `RaiseDomainEvent` añade el evento correctamente, que `ClearDomainEvents` vacía la lista. Tests para `Error`: que dos errores con el mismo código y descripción son iguales por ser records.
 
@@ -180,7 +180,7 @@ Crear el proyecto `SharedKernel.Tests` con xUnit y FluentAssertions. Tests para 
 
 Es el segundo porque es el Bounded Context central del negocio. Sin grupo no existe ninguna otra entidad del sistema. Se construye en este orden interno: primero el Domain (agregado Group, agregado Invitation, value objects GroupName y GroupId, domain events, errores de dominio e interfaz IGroupRepository), luego el Application (commands CreateGroup y AddMember, queries GetGroupDetails y GetGroupsByUser, validadores y DTOs), luego el Infrastructure (GroupsDbContext, configuraciones de EF Core, implementación de GroupRepository, publicación de integration events con MassTransit) y finalmente el Api (endpoints Minimal API, registro de dependencias en Program.cs).
 
-#### Fase 2.1 — Estructura de proyectos del Groups Service
+#### Fase 2.1 — Estructura de proyectos del Groups Service ----
 
 Crear la solución de carpetas y los cuatro proyectos de la Clean Architecture para el Groups Service: `Groups.Domain`, `Groups.Application`, `Groups.Infrastructure` y `Groups.Api`. Configurar las referencias entre proyectos respetando la regla de dependencias: Domain sin referencias externas, Application referencia Domain, Infrastructure referencia Application y Domain, Api referencia Application. Añadir los cuatro proyectos a la solución principal. En este paso no se escribe ninguna clase de negocio, solo la estructura de carpetas y los archivos `.csproj` con sus dependencias y los paquetes NuGet base de cada capa.
 
