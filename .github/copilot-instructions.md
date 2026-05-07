@@ -196,7 +196,7 @@ Crear el value object `GroupName` en la capa Domain como record inmutable. El m�
 
 Crear la entidad `Member` dentro de la capa Domain. Representa a un usuario dentro de un grupo. Propiedades: `UserId` (strongly-typed), `Email` (string, solo lectura), `Role` (enum `GroupRole` con valores `Admin` y `Member`), `JoinedAt` (DateTime). La entidad tiene constructor privado vacío para EF Core y método de fábrica estático `Create(UserId, string email, GroupRole, DateTime)` que devuelve `Result<Member>`. No tiene lógica de negocio propia, es controlada por el agregado `Group`.
 
-#### Fase 2.5 — Agregado Group (estructura base)
+#### Fase 2.5 — Agregado Group (estructura base) ----
 
 Crear el agregado `Group` en la capa Domain como la clase raíz que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `GroupId`, `Name` de tipo `GroupName`, `AdminId` de tipo `UserId`, `CreatedAt` de tipo `DateTime` y la colección interna privada de `Member` expuesta como `IReadOnlyCollection<Member>`. Constructor privado vacío para EF Core. Método de fábrica estático `Create(GroupName, UserId adminId, DateTime)` que devuelve `Result<Group>` y emite el domain event `GroupCreatedEvent`. En esta fase solo se crea la estructura y el método `Create`, sin los métodos de negocio adicionales.
 
