@@ -208,7 +208,7 @@ Crear los tres domain events que emite el agregado `Group`: `GroupCreatedEvent` 
 
 Añadir al agregado `Group` los métodos de negocio: `AddMember(UserId, string email, DateTime joinedAt)` que devuelve `Result` y emite `MemberAddedEvent`, y `RemoveMember(UserId)` que devuelve `Result` y emite `MemberRemovedEvent`. Añadir la clase estática `GroupErrors` con todos los errores de dominio del agregado: `Group.MemberAlreadyExists`, `Group.MemberNotFound`, `Group.AdminCannotBeRemoved`, `Group.NameRequired`, `Group.NameTooShort` y `Group.NameTooLong`. Los mensajes descriptivos van en español.
 
-#### Fase 2.8 — Agregado Invitation
+#### Fase 2.8 — Agregado Invitation ----
 
 Crear el agregado `Invitation` en la capa Domain. Propiedades: `Id` de tipo `InvitationId` (crear también este strongly-typed ID), `GroupId`, `InviteeEmail` (string), `Status` (enum `InvitationStatus` con valores `Pending`, `Accepted` y `Cancelled`), `CreatedAt` y `ExpiresAt`. Método de fábrica `Create(GroupId, string email, DateTime createdAt, DateTime expiresAt)` que devuelve `Result<Invitation>`. Métodos de negocio `Accept()` y `Cancel()` que devuelven `Result`. Clase estática `InvitationErrors` con los errores correspondientes en español.
 
