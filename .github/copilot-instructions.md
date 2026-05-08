@@ -244,7 +244,7 @@ Crear en la capa Application (o en un proyecto compartido de contratos) los tres
 
 Crear en la capa Infrastructure el `GroupsDbContext` que hereda de `DbContext`. `DbSet<Group>` y `DbSet<Invitation>`. Crear las clases de configuración de EF Core: `GroupConfiguration` que implementa `IEntityTypeConfiguration<Group>` (mapea la tabla, configura `GroupId` con el `ValueConverter`, mapea `GroupName` como owned type, configura la colección de `Member` como owned entity collection) e `InvitationConfiguration` que implementa `IEntityTypeConfiguration<Invitation>`. Crear la migration inicial.
 
-#### Fase 2.17 — Implementaciones de repositorios
+#### Fase 2.17 — Implementaciones de repositorios ----
 
 Crear `GroupRepository` en la capa Infrastructure que implementa `IGroupRepository` usando `GroupsDbContext`. Implementar todos los métodos de la interfaz con `async/await`. Crear `InvitationRepository` que implementa `IInvitationRepository`. Crear la implementación de `IUnitOfWork` basada en `GroupsDbContext.SaveChangesAsync`. Registrar todo en el contenedor de dependencias.
 
