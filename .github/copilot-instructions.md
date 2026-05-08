@@ -236,11 +236,11 @@ Crear la query `GetGroupDetailsQuery` con propiedad `GroupId`. Crear el DTO `Gro
 
 Crear la query `GetGroupsByUserQuery` con propiedad `UserId`. Crear el DTO `GroupSummaryDto` con `GroupId Id`, `string Name`, `int MemberCount` y `string UserRole`. Crear el handler `GetGroupsByUserQueryHandler` como `internal sealed class` que devuelve `Result<IReadOnlyList<GroupSummaryDto>>`. El handler usa `IGroupRepository.GetByUserIdAsync` y proyecta los resultados.
 
-#### Fase 2.15 — Integration Events del Groups Service
+#### Fase 2.15 — Integration Events del Groups Service ----
 
 Crear en la capa Application (o en un proyecto compartido de contratos) los tres integration events: `GroupCreatedIntegrationEvent` con `GroupId` y `UserId AdminId`, `MemberAddedToGroupIntegrationEvent` con `GroupId`, `UserId` y `string Email`, y `MemberRemovedFromGroupIntegrationEvent` con `GroupId` y `UserId`. Todos heredan de `IntegrationEvent` del SharedKernel. Crear los manejadores de domain events que publican estos integration events usando el patrón Outbox: `GroupCreatedEventHandler`, `MemberAddedEventHandler` y `MemberRemovedEventHandler`.
 
-#### Fase 2.16 — GroupsDbContext y configuraciones EF Core
+#### Fase 2.16 — GroupsDbContext y configuraciones EF Core ----
 
 Crear en la capa Infrastructure el `GroupsDbContext` que hereda de `DbContext`. `DbSet<Group>` y `DbSet<Invitation>`. Crear las clases de configuración de EF Core: `GroupConfiguration` que implementa `IEntityTypeConfiguration<Group>` (mapea la tabla, configura `GroupId` con el `ValueConverter`, mapea `GroupName` como owned type, configura la colección de `Member` como owned entity collection) e `InvitationConfiguration` que implementa `IEntityTypeConfiguration<Invitation>`. Crear la migration inicial.
 
