@@ -216,7 +216,7 @@ Crear el agregado `Invitation` en la capa Domain. Propiedades: `Id` de tipo `Inv
 
 Crear la interfaz `IGroupRepository` en la capa Domain. Métodos: `GetByIdAsync(GroupId, CancellationToken)`, `AddAsync(Group, CancellationToken)`, `UpdateAsync(Group, CancellationToken)` y `GetByUserIdAsync(UserId, CancellationToken)` que devuelve `IReadOnlyList<Group>`. Crear también `IInvitationRepository` con `GetByIdAsync`, `AddAsync` y `GetPendingByEmailAsync`. Estas interfaces no tienen implementación en esta fase, solo la definición del contrato.
 
-#### Fase 2.10 — Command: CreateGroup
+#### Fase 2.10 — Command: CreateGroup ----
 
 Crear en la capa Application el command `CreateGroupCommand` con propiedades `string Name` y `UserId AdminId`. Crear el handler `CreateGroupCommandHandler` como `internal sealed class` que implementa `IRequestHandler<CreateGroupCommand, Result<GroupId>>`. El handler usa `IGroupRepository`, `IUnitOfWork` e `IDateTimeProvider`. Lógica: crear `GroupName` desde el comando, crear el agregado `Group`, persistirlo y llamar a `SaveChangesAsync`. Crear el validador `CreateGroupCommandValidator` con FluentValidation que valida que `Name` no esté vacío y tenga entre 3 y 100 caracteres.
 
