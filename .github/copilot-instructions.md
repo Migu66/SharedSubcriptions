@@ -264,7 +264,7 @@ Completar el `Program.cs` del proyecto `Groups.Api`. Registrar: `GroupsDbContext
 
 Crear el proyecto `Groups.Domain.Tests` con xUnit, FluentAssertions y NSubstitute. Escribir tests para el agregado `Group`: creación exitosa, fallo por nombre inválido, añadir miembro correctamente, fallo al añadir miembro duplicado, fallo al eliminar al administrador, eliminación exitosa de un miembro. Tests para el value object `GroupName`: creación válida, fallo por vacío, fallo por nombre demasiado corto, fallo por nombre demasiado largo. Tests para el agregado `Invitation`: creación, aceptación y cancelación. Los tests de dominio son C# puro sin mocks, siguiendo el patrón Arrange, Act, Assert con comentarios explícitos.
 
-#### Fase 2.22 — Tests unitarios de la capa Application 
+#### Fase 2.22 — Tests unitarios de la capa Application ----
 
 Crear el proyecto `Groups.Application.Tests`. Escribir tests para `CreateGroupCommandHandler`: creación exitosa verifica que se llama a `AddAsync` y `SaveChangesAsync`, fallo por nombre inválido retorna el error correspondiente. Tests para `AddMemberCommandHandler`: añadir miembro exitosamente, fallo cuando el grupo no existe, fallo cuando el solicitante no es el administrador, fallo cuando el miembro ya existe. Tests para `RemoveMemberCommandHandler` y para los dos query handlers. Usar NSubstitute para los repositorios y el UnitOfWork.
 

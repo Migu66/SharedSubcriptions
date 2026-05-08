@@ -2,6 +2,7 @@
   <Folder Name="/services/" />
   <Folder Name="/services/Groups/">
     <Project Path="services/Groups/Groups.Api/Groups.Api.csproj" />
+    <Project Path="services/Groups/Groups.Application.Tests/Groups.Application.Tests.csproj" />
     <Project Path="services/Groups/Groups.Application/Groups.Application.csproj" />
     <Project Path="services/Groups/Groups.Domain.Tests/Groups.Domain.Tests.csproj" />
     <Project Path="services/Groups/Groups.Domain/Groups.Domain.csproj" />
