@@ -248,11 +248,11 @@ Crear en la capa Infrastructure el `GroupsDbContext` que hereda de `DbContext`. 
 
 Crear `GroupRepository` en la capa Infrastructure que implementa `IGroupRepository` usando `GroupsDbContext`. Implementar todos los métodos de la interfaz con `async/await`. Crear `InvitationRepository` que implementa `IInvitationRepository`. Crear la implementación de `IUnitOfWork` basada en `GroupsDbContext.SaveChangesAsync`. Registrar todo en el contenedor de dependencias.
 
-#### Fase 2.18 — Publicación de Integration Events con MassTransit y Outbox
+#### Fase 2.18 — Publicación de Integration Events con MassTransit y Outbox ----
 
 Configurar MassTransit en la capa Infrastructure para el Groups Service. Configurar el patrón Outbox de MassTransit con EF Core para que los integration events se publiquen de forma transaccional junto con los cambios del agregado. Configurar la conexión a RabbitMQ (en desarrollo) leyendo la cadena de conexión desde `appsettings.json`. Registrar los publicadores en el contenedor de dependencias.
 
-#### Fase 2.19 — Endpoints Minimal API
+#### Fase 2.19 — Endpoints Minimal API ----
 
 Crear en la capa Api los endpoints del Groups Service usando Minimal APIs organizados en una clase de extensión `GroupEndpoints`. Endpoints: `POST /api/groups` (CreateGroup), `GET /api/groups/{groupId}` (GetGroupDetails), `GET /api/groups/user/{userId}` (GetGroupsByUser), `POST /api/groups/{groupId}/members` (AddMember) y `DELETE /api/groups/{groupId}/members/{memberId}` (RemoveMember). Todos los endpoints solo invocan a MediatR y devuelven los códigos HTTP adecuados. Proteger todos los endpoints con autenticación JWT Bearer.
 
