@@ -224,7 +224,7 @@ Crear en la capa Application el command `CreateGroupCommand` con propiedades `st
 
 Crear el command `AddMemberCommand` con propiedades `GroupId`, `UserId AdminId` (quien ejecuta la acción), `string InviteeEmail` y `UserId NewMemberId`. Crear el handler `AddMemberCommandHandler` como `internal sealed class` que devuelve `Result`. El handler verifica que el grupo existe, que el solicitante es el administrador y llama a `group.AddMember(...)`. Crear el validador `AddMemberCommandValidator` que valida que el email tenga formato válido y que los IDs no sean vacíos.
 
-#### Fase 2.12 — Command: RemoveMember
+#### Fase 2.12 — Command: RemoveMember ----
 
 Crear el command `RemoveMemberCommand` con propiedades `GroupId`, `UserId AdminId` y `UserId MemberToRemoveId`. Crear el handler `RemoveMemberCommandHandler` como `internal sealed class` que devuelve `Result`. El handler carga el grupo, verifica que el solicitante es el administrador y llama a `group.RemoveMember(...)`. Crear el validador correspondiente con FluentValidation.
 
