@@ -1,4 +1,5 @@
 using Groups.Domain.Aggregates;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Groups.Infrastructure.Persistence;
@@ -17,5 +18,10 @@ public sealed class GroupsDbContext : DbContext
         // Aplica automáticamente todas las clases IEntityTypeConfiguration
         // que estén en este mismo ensamblado (Infrastructure)
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(GroupsDbContext).Assembly);
+
+        // Tablas del patrón Outbox de MassTransit (OutboxMessage, OutboxState, InboxState)
+        modelBuilder.AddInboxStateEntity();
+        modelBuilder.AddOutboxStateEntity();
+        modelBuilder.AddOutboxMessageEntity();
     }
 }

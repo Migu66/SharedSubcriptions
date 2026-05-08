@@ -4,6 +4,7 @@ using Groups.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Groups.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(GroupsDbContext))]
-    partial class GroupsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260508155716_AddOutboxTables")]
+    partial class AddOutboxTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
