@@ -1,7 +1,8 @@
 using Groups.Domain.Repositories;
-using Groups.Infrastructure.EventHandlers;
 using Groups.Infrastructure.Persistence;
+using Groups.Infrastructure.Persistence.Interceptors;
 using Groups.Infrastructure.Persistence.Repositories;
+using Groups.Infrastructure.Services;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,12 +17,19 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<GroupsDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("GroupsDb")));
+        // El interceptor necesita ser Scoped porque IPublisher (MediatR) es Scoped
+        services.AddScoped<DomainEventDispatcherInterceptor>();
+
+        services.AddDbContext<GroupsDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("GroupsDb"));
+            options.AddInterceptors(sp.GetRequiredService<DomainEventDispatcherInterceptor>());
+        });
 
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IInvitationRepository, InvitationRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         services.AddMassTransit(bus =>
         {
