@@ -228,7 +228,7 @@ Crear el command `AddMemberCommand` con propiedades `GroupId`, `UserId AdminId` 
 
 Crear el command `RemoveMemberCommand` con propiedades `GroupId`, `UserId AdminId` y `UserId MemberToRemoveId`. Crear el handler `RemoveMemberCommandHandler` como `internal sealed class` que devuelve `Result`. El handler carga el grupo, verifica que el solicitante es el administrador y llama a `group.RemoveMember(...)`. Crear el validador correspondiente con FluentValidation.
 
-#### Fase 2.13 — Query: GetGroupDetailsQuery
+#### Fase 2.13 — Query: GetGroupDetailsQuery ----
 
 Crear la query `GetGroupDetailsQuery` con propiedad `GroupId`. Crear el DTO `GroupDetailsDto` con propiedades: `GroupId Id`, `string Name`, `UserId AdminId`, `DateTime CreatedAt` y `IReadOnlyList<MemberDto> Members`. Crear `MemberDto` con `UserId Id`, `string Email`, `string Role` y `DateTime JoinedAt`. Crear el handler `GetGroupDetailsQueryHandler` como `internal sealed class` que devuelve `Result<GroupDetailsDto>`. El handler carga el grupo y lo proyecta al DTO.
 
