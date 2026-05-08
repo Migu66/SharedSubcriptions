@@ -232,7 +232,7 @@ Crear el command `RemoveMemberCommand` con propiedades `GroupId`, `UserId AdminI
 
 Crear la query `GetGroupDetailsQuery` con propiedad `GroupId`. Crear el DTO `GroupDetailsDto` con propiedades: `GroupId Id`, `string Name`, `UserId AdminId`, `DateTime CreatedAt` y `IReadOnlyList<MemberDto> Members`. Crear `MemberDto` con `UserId Id`, `string Email`, `string Role` y `DateTime JoinedAt`. Crear el handler `GetGroupDetailsQueryHandler` como `internal sealed class` que devuelve `Result<GroupDetailsDto>`. El handler carga el grupo y lo proyecta al DTO.
 
-#### Fase 2.14 — Query: GetGroupsByUserQuery
+#### Fase 2.14 — Query: GetGroupsByUserQuery ----
 
 Crear la query `GetGroupsByUserQuery` con propiedad `UserId`. Crear el DTO `GroupSummaryDto` con `GroupId Id`, `string Name`, `int MemberCount` y `string UserRole`. Crear el handler `GetGroupsByUserQueryHandler` como `internal sealed class` que devuelve `Result<IReadOnlyList<GroupSummaryDto>>`. El handler usa `IGroupRepository.GetByUserIdAsync` y proyecta los resultados.
 
