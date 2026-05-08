@@ -220,7 +220,7 @@ Crear la interfaz `IGroupRepository` en la capa Domain. Métodos: `GetByIdAsync(
 
 Crear en la capa Application el command `CreateGroupCommand` con propiedades `string Name` y `UserId AdminId`. Crear el handler `CreateGroupCommandHandler` como `internal sealed class` que implementa `IRequestHandler<CreateGroupCommand, Result<GroupId>>`. El handler usa `IGroupRepository`, `IUnitOfWork` e `IDateTimeProvider`. Lógica: crear `GroupName` desde el comando, crear el agregado `Group`, persistirlo y llamar a `SaveChangesAsync`. Crear el validador `CreateGroupCommandValidator` con FluentValidation que valida que `Name` no esté vacío y tenga entre 3 y 100 caracteres.
 
-#### Fase 2.11 — Command: AddMember
+#### Fase 2.11 — Command: AddMember ----
 
 Crear el command `AddMemberCommand` con propiedades `GroupId`, `UserId AdminId` (quien ejecuta la acción), `string InviteeEmail` y `UserId NewMemberId`. Crear el handler `AddMemberCommandHandler` como `internal sealed class` que devuelve `Result`. El handler verifica que el grupo existe, que el solicitante es el administrador y llama a `group.AddMember(...)`. Crear el validador `AddMemberCommandValidator` que valida que el email tenga formato válido y que los IDs no sean vacíos.
 

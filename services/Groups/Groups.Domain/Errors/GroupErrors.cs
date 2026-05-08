@@ -4,6 +4,14 @@ namespace Groups.Domain.Errors;
 
 public static class GroupErrors
 {
+    public static readonly Error NotFound = new(
+        "Group.NotFound",
+        "El grupo no existe.");
+
+    public static readonly Error NotAdmin = new(
+        "Group.NotAdmin",
+        "Solo el administrador del grupo puede realizar esta acción.");
+
     public static readonly Error MemberAlreadyExists = new(
         "Group.MemberAlreadyExists",
         "El usuario ya es miembro de este grupo.");
