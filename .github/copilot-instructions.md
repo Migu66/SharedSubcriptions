@@ -256,15 +256,15 @@ Configurar MassTransit en la capa Infrastructure para el Groups Service. Configu
 
 Crear en la capa Api los endpoints del Groups Service usando Minimal APIs organizados en una clase de extensión `GroupEndpoints`. Endpoints: `POST /api/groups` (CreateGroup), `GET /api/groups/{groupId}` (GetGroupDetails), `GET /api/groups/user/{userId}` (GetGroupsByUser), `POST /api/groups/{groupId}/members` (AddMember) y `DELETE /api/groups/{groupId}/members/{memberId}` (RemoveMember). Todos los endpoints solo invocan a MediatR y devuelven los códigos HTTP adecuados. Proteger todos los endpoints con autenticación JWT Bearer.
 
-#### Fase 2.20 — Program.cs y registro de dependencias
+#### Fase 2.20 — Program.cs y registro de dependencias ----
 
 Completar el `Program.cs` del proyecto `Groups.Api`. Registrar: `GroupsDbContext` con la cadena de conexión desde configuración, los repositorios, MediatR con todos los handlers de la capa Application, FluentValidation, MassTransit con la configuración del Outbox, autenticación JWT Bearer y los endpoints. Añadir el middleware de manejo de errores. Configurar Serilog para logging hacia Seq en desarrollo. Asegurarse de que la aplicación arranca y los endpoints responden correctamente.
 
-#### Fase 2.21 — Tests unitarios del dominio
+#### Fase 2.21 — Tests unitarios del dominio ----
 
 Crear el proyecto `Groups.Domain.Tests` con xUnit, FluentAssertions y NSubstitute. Escribir tests para el agregado `Group`: creación exitosa, fallo por nombre inválido, añadir miembro correctamente, fallo al añadir miembro duplicado, fallo al eliminar al administrador, eliminación exitosa de un miembro. Tests para el value object `GroupName`: creación válida, fallo por vacío, fallo por nombre demasiado corto, fallo por nombre demasiado largo. Tests para el agregado `Invitation`: creación, aceptación y cancelación. Los tests de dominio son C# puro sin mocks, siguiendo el patrón Arrange, Act, Assert con comentarios explícitos.
 
-#### Fase 2.22 — Tests unitarios de la capa Application
+#### Fase 2.22 — Tests unitarios de la capa Application 
 
 Crear el proyecto `Groups.Application.Tests`. Escribir tests para `CreateGroupCommandHandler`: creación exitosa verifica que se llama a `AddAsync` y `SaveChangesAsync`, fallo por nombre inválido retorna el error correspondiente. Tests para `AddMemberCommandHandler`: añadir miembro exitosamente, fallo cuando el grupo no existe, fallo cuando el solicitante no es el administrador, fallo cuando el miembro ya existe. Tests para `RemoveMemberCommandHandler` y para los dos query handlers. Usar NSubstitute para los repositorios y el UnitOfWork.
 
