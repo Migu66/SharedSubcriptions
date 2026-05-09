@@ -1,4 +1,6 @@
+using Groups.Application.IntegrationEvents;
 using Groups.Domain.Repositories;
+using Groups.Infrastructure.Messaging;
 using Groups.Infrastructure.Persistence;
 using Groups.Infrastructure.Persistence.Interceptors;
 using Groups.Infrastructure.Persistence.Repositories;
@@ -33,6 +35,9 @@ public static class DependencyInjection
 
         services.AddMassTransit(bus =>
         {
+            // Consumer: reacciona al borrado de usuarios en Identity Service
+            bus.AddConsumer<UserDeletedIntegrationEventConsumer>();
+
             // Outbox transaccional: los eventos se guardan en la misma BD
             // antes de enviarse a RabbitMQ, garantizando que nunca se pierdan
             bus.AddEntityFrameworkOutbox<GroupsDbContext>(outbox =>
@@ -51,6 +56,13 @@ public static class DependencyInjection
                         h.Username(configuration["RabbitMq:Username"] ?? throw new InvalidOperationException("Falta la configuración 'RabbitMq:Username'."));
                         h.Password(configuration["RabbitMq:Password"] ?? throw new InvalidOperationException("Falta la configuración 'RabbitMq:Password'."));
                     });
+
+                // Enlazar el tipo local al exchange que publica Identity Service.
+                // MassTransit usa el FullName del tipo como nombre del exchange,
+                // así que configuramos el entity name del contrato local para que apunte
+                // al exchange de Identity: Identity.Application.IntegrationEvents.UserDeletedIntegrationEvent
+                cfg.Message<UserDeletedIntegrationEvent>(m =>
+                    m.SetEntityName("Identity.Application.IntegrationEvents.UserDeletedIntegrationEvent"));
 
                 cfg.ConfigureEndpoints(context);
             });

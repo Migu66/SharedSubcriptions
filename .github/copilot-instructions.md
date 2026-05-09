@@ -316,11 +316,11 @@ Crear los integration events: `UserRegisteredIntegrationEvent` con `UserId`, `st
 
 Crear `IdentityDbContext` que hereda de `IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>`. Crear `ApplicationUserConfiguration` que implementa `IEntityTypeConfiguration<ApplicationUser>`. Crear la entidad `RefreshToken` con su configuración EF Core para almacenar refresh tokens. Crear la migración inicial.
 
-#### Fase 3.12 — Implementación de repositorios y JWT
+#### Fase 3.12 — Implementación de repositorios y JWT ----
 
 Crear `UserRepository` en `Identity.Infrastructure` que implementa `IUserRepository`. Crear el servicio `JwtTokenService` que genera tokens JWT firmados con la clave secreta desde configuración, con claims de `UserId`, `email` y `roles`. Crear `RefreshTokenRepository`. Registrar todo en el contenedor de dependencias.
 
-#### Fase 3.13 — MassTransit y Outbox en Identity Service
+#### Fase 3.13 — MassTransit y Outbox en Identity Service ----
 
 Configurar MassTransit con el patrón Outbox de EF Core en `Identity.Infrastructure`. Configurar el consumidor de `UserDeletedIntegrationEvent` en Groups Service (añadir el handler `UserDeletedIntegrationEventConsumer` que llama a `RemoveMember` para todos los grupos del usuario). Configurar la conexión a RabbitMQ desde `appsettings.json`.
 
