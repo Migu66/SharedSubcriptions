@@ -10,7 +10,9 @@
   </Folder>
   <Folder Name="/services/Identity/">
     <Project Path="services/Identity/Identity.Api/Identity.Api.csproj" />
+    <Project Path="services/Identity/Identity.Application.Tests/Identity.Application.Tests.csproj" />
     <Project Path="services/Identity/Identity.Application/Identity.Application.csproj" />
+    <Project Path="services/Identity/Identity.Domain.Tests/Identity.Domain.Tests.csproj" />
     <Project Path="services/Identity/Identity.Domain/Identity.Domain.csproj" />
     <Project Path="services/Identity/Identity.Infrastructure/Identity.Infrastructure.csproj" />
   </Folder>
