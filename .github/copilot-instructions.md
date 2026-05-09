@@ -324,7 +324,7 @@ Crear `UserRepository` en `Identity.Infrastructure` que implementa `IUserReposit
 
 Configurar MassTransit con el patrón Outbox de EF Core en `Identity.Infrastructure`. Configurar el consumidor de `UserDeletedIntegrationEvent` en Groups Service (añadir el handler `UserDeletedIntegrationEventConsumer` que llama a `RemoveMember` para todos los grupos del usuario). Configurar la conexión a RabbitMQ desde `appsettings.json`.
 
-#### Fase 3.14 — Endpoints Minimal API del Identity Service
+#### Fase 3.14 — Endpoints Minimal API del Identity Service ----
 
 Crear en `Identity.Api` la clase de extensión `IdentityEndpoints` con los endpoints: `POST /api/auth/register` (RegisterUser), `POST /api/auth/login` (LoginUser), `POST /api/auth/refresh` (RefreshToken) y `GET /api/users/{userId}/profile` (GetUserProfile). El endpoint de perfil requiere autenticación JWT. Los demás son públicos.
 
