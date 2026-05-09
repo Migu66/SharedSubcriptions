@@ -328,7 +328,7 @@ Configurar MassTransit con el patrón Outbox de EF Core en `Identity.Infrastruct
 
 Crear en `Identity.Api` la clase de extensión `IdentityEndpoints` con los endpoints: `POST /api/auth/register` (RegisterUser), `POST /api/auth/login` (LoginUser), `POST /api/auth/refresh` (RefreshToken) y `GET /api/users/{userId}/profile` (GetUserProfile). El endpoint de perfil requiere autenticación JWT. Los demás son públicos.
 
-#### Fase 3.15 — Tests unitarios del Identity Service
+#### Fase 3.15 — Tests unitarios del Identity Service ----
 
 Crear `Identity.Domain.Tests` con tests para `ApplicationUser`: creación exitosa, emisión de `UserRegisteredEvent`, errores de validación. Crear `Identity.Application.Tests` con tests para `RegisterUserCommandHandler`: registro exitoso, fallo por email duplicado. Tests para `LoginUserCommandHandler`: login exitoso, fallo por credenciales incorrectas. Usar NSubstitute para `IUserRepository`, `UserManager` y `JwtTokenService`.
 
