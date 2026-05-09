@@ -308,7 +308,7 @@ Crear el command `RefreshTokenCommand` con propiedad `string RefreshToken`. Crea
 
 Crear la query `GetUserProfileQuery` con propiedad `UserId`. Crear el DTO `UserProfileDto` con `UserId Id`, `string Email`, `string FirstName`, `string LastName` y `DateTime CreatedAt`. Crear el handler `GetUserProfileQueryHandler` como `internal sealed class` que devuelve `Result<UserProfileDto>`.
 
-#### Fase 3.10 — Integration Events del Identity Service
+#### Fase 3.10 — Integration Events del Identity Service ----
 
 Crear los integration events: `UserRegisteredIntegrationEvent` con `UserId`, `string Email`, `string FirstName` y `string LastName`, y `UserDeletedIntegrationEvent` con `UserId` y `string Email`. Crear los handlers de domain events `UserRegisteredEventHandler` y `UserDeletedEventHandler` que publican los integration events mediante el patrón Outbox.
 
