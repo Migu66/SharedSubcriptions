@@ -288,11 +288,11 @@ Crear el agregado `ApplicationUser` en `Identity.Domain` que hereda de `Aggregat
 
 Crear los domain events: `UserRegisteredEvent` (contiene `UserId`, `string Email`, `string FirstName`, `string LastName`) y `UserDeletedEvent` (contiene `UserId` y `string Email`). Ambos implementan `IDomainEvent` y son records inmutables.
 
-#### Fase 3.5 — Interfaz IUserRepository
+#### Fase 3.5 — Interfaz IUserRepository ----
 
 Crear la interfaz `IUserRepository` en `Identity.Domain`. Métodos: `GetByIdAsync(UserId, CancellationToken)`, `GetByEmailAsync(string email, CancellationToken)`, `AddAsync(ApplicationUser, CancellationToken)` y `ExistsWithEmailAsync(string email, CancellationToken)` que devuelve `Task<bool>`.
 
-#### Fase 3.6 — Command: RegisterUser
+#### Fase 3.6 — Command: RegisterUser ----
 
 Crear en `Identity.Application` el command `RegisterUserCommand` con propiedades `string Email`, `string Password`, `string FirstName` y `string LastName`. Crear el handler `RegisterUserCommandHandler` como `internal sealed class` que devuelve `Result<UserId>`. El handler verifica que el email no exista, crea el `ApplicationUser` y usa `UserManager<ApplicationUser>` para persistirlo con la contraseña hasheada. Crear el validador `RegisterUserCommandValidator` con FluentValidation.
 
