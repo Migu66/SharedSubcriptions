@@ -2,11 +2,11 @@ using Identity.Application.Abstractions;
 using Identity.Application.DTOs;
 using Identity.Domain.Aggregates;
 using Identity.Domain.Errors;
-using Identity.Domain.Entities;
 using Identity.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using SharedSubscriptions.SharedKernel.Domain;
+using RefreshTokenEntity = Identity.Domain.Entities.RefreshToken;
 
 namespace Identity.Application.Commands.LoginUser;
 
@@ -54,7 +54,7 @@ internal sealed class LoginUserCommandHandler
         var tokens = _jwtTokenService.GenerateTokens(user);
 
         // Paso 4: Persistir el refresh token en base de datos.
-        var refreshToken = RefreshToken.Create(
+        var refreshToken = RefreshTokenEntity.Create(
             userId: user.Id,
             token: tokens.RefreshToken,
             expiresAt: tokens.ExpiresAt.AddDays(7),

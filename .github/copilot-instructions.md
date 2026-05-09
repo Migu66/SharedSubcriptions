@@ -296,11 +296,11 @@ Crear la interfaz `IUserRepository` en `Identity.Domain`. Métodos: `GetByIdAsyn
 
 Crear en `Identity.Application` el command `RegisterUserCommand` con propiedades `string Email`, `string Password`, `string FirstName` y `string LastName`. Crear el handler `RegisterUserCommandHandler` como `internal sealed class` que devuelve `Result<UserId>`. El handler verifica que el email no exista, crea el `ApplicationUser` y usa `UserManager<ApplicationUser>` para persistirlo con la contraseña hasheada. Crear el validador `RegisterUserCommandValidator` con FluentValidation.
 
-#### Fase 3.7 — Command: LoginUser
+#### Fase 3.7 — Command: LoginUser ----
 
 Crear el command `LoginUserCommand` con propiedades `string Email` y `string Password`. Crear el handler `LoginUserCommandHandler` como `internal sealed class` que devuelve `Result<AuthTokenDto>`. El handler verifica credenciales con `SignInManager`, genera el token JWT y el refresh token. Crear el DTO `AuthTokenDto` con `string AccessToken`, `string RefreshToken` y `DateTime ExpiresAt`. Crear el validador correspondiente.
 
-#### Fase 3.8 — Command: RefreshToken
+#### Fase 3.8 — Command: RefreshToken ----
 
 Crear el command `RefreshTokenCommand` con propiedad `string RefreshToken`. Crear el handler `RefreshTokenCommandHandler` que valida el refresh token almacenado, genera un nuevo par de tokens y devuelve `Result<AuthTokenDto>`. Los refresh tokens se almacenan en base de datos con fecha de expiración.
 
