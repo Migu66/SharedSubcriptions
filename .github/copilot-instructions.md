@@ -304,7 +304,7 @@ Crear el command `LoginUserCommand` con propiedades `string Email` y `string Pas
 
 Crear el command `RefreshTokenCommand` con propiedad `string RefreshToken`. Crear el handler `RefreshTokenCommandHandler` que valida el refresh token almacenado, genera un nuevo par de tokens y devuelve `Result<AuthTokenDto>`. Los refresh tokens se almacenan en base de datos con fecha de expiración.
 
-#### Fase 3.9 — Query: GetUserProfileQuery
+#### Fase 3.9 — Query: GetUserProfileQuery ----
 
 Crear la query `GetUserProfileQuery` con propiedad `UserId`. Crear el DTO `UserProfileDto` con `UserId Id`, `string Email`, `string FirstName`, `string LastName` y `DateTime CreatedAt`. Crear el handler `GetUserProfileQueryHandler` como `internal sealed class` que devuelve `Result<UserProfileDto>`.
 
