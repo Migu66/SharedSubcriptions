@@ -284,7 +284,7 @@ Crear el value object `UserId` en `Identity.Domain`. Record inmutable que envuel
 
 Crear el agregado `ApplicationUser` en `Identity.Domain` que hereda de `AggregateRoot` y de `IdentityUser<Guid>` para compatibilidad con ASP.NET Core Identity. Propiedades adicionales: `string FirstName`, `string LastName`, `DateTime CreatedAt`. Método de fábrica estático `Create(string email, string firstName, string lastName, DateTime)` que devuelve `Result<ApplicationUser>` y emite `UserRegisteredEvent`. Clase estática `UserErrors` con errores en español: `User.EmailAlreadyExists`, `User.InvalidEmail`, `User.NotFound`.
 
-#### Fase 3.4 — Domain Events del Identity Service
+#### Fase 3.4 — Domain Events del Identity Service ----
 
 Crear los domain events: `UserRegisteredEvent` (contiene `UserId`, `string Email`, `string FirstName`, `string LastName`) y `UserDeletedEvent` (contiene `UserId` y `string Email`). Ambos implementan `IDomainEvent` y son records inmutables.
 
