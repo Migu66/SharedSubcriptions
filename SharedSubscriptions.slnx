@@ -8,6 +8,12 @@
     <Project Path="services/Groups/Groups.Domain/Groups.Domain.csproj" />
     <Project Path="services/Groups/Groups.Infrastructure/Groups.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/services/Identity/">
+    <Project Path="services/Identity/Identity.Api/Identity.Api.csproj" />
+    <Project Path="services/Identity/Identity.Application/Identity.Application.csproj" />
+    <Project Path="services/Identity/Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="services/Identity/Identity.Infrastructure/Identity.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/shared/" />
   <Folder Name="/shared/SharedKernel/">
     <Project Path="shared/SharedKernel/SharedSubscriptions.SharedKernel/SharedSubscriptions.SharedKernel.csproj" />
