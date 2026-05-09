@@ -312,7 +312,7 @@ Crear la query `GetUserProfileQuery` con propiedad `UserId`. Crear el DTO `UserP
 
 Crear los integration events: `UserRegisteredIntegrationEvent` con `UserId`, `string Email`, `string FirstName` y `string LastName`, y `UserDeletedIntegrationEvent` con `UserId` y `string Email`. Crear los handlers de domain events `UserRegisteredEventHandler` y `UserDeletedEventHandler` que publican los integration events mediante el patrón Outbox.
 
-#### Fase 3.11 — IdentityDbContext y configuraciones EF Core
+#### Fase 3.11 — IdentityDbContext y configuraciones EF Core ----
 
 Crear `IdentityDbContext` que hereda de `IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>`. Crear `ApplicationUserConfiguration` que implementa `IEntityTypeConfiguration<ApplicationUser>`. Crear la entidad `RefreshToken` con su configuración EF Core para almacenar refresh tokens. Crear la migración inicial.
 
