@@ -272,11 +272,11 @@ Crear el proyecto `Groups.Application.Tests`. Escribir tests para `CreateGroupCo
 
 Es el tercero porque se necesitan usuarios reales para probar el flujo completo de grupos. Se construye en el mismo orden interno: Domain, Application, Infrastructure y Api. Usa ASP.NET Core Identity como base. Emite UserRegisteredIntegrationEvent y UserDeletedIntegrationEvent. Groups Service debe estar preparado para consumir UserDeletedIntegrationEvent y eliminar al miembro de sus grupos.
 
-#### Fase 3.1 — Estructura de proyectos del Identity Service
+#### Fase 3.1 — Estructura de proyectos del Identity Service ----
 
 Crear los cuatro proyectos de la Clean Architecture: `Identity.Domain`, `Identity.Application`, `Identity.Infrastructure` e `Identity.Api`. Configurar las referencias entre proyectos respetando la regla de dependencias. Añadirlos a la solución principal. En este paso solo se crean los `.csproj` con sus paquetes NuGet base, incluyendo `Microsoft.AspNetCore.Identity.EntityFrameworkCore` en Infrastructure.
 
-#### Fase 3.2 — Strongly-typed ID: UserId
+#### Fase 3.2 — Strongly-typed ID: UserId ----
 
 Crear el value object `UserId` en `Identity.Domain`. Record inmutable que envuelve un `Guid`. Métodos de fábrica `New()` y `From(Guid value)` que devuelve `Result<UserId>` validando que el guid no sea vacío. Preparar el `ValueConverter` para EF Core. Este ID también se referenciará desde otros servicios a través del SharedKernel o contratos compartidos.
 
