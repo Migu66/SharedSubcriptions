@@ -280,7 +280,7 @@ Crear los cuatro proyectos de la Clean Architecture: `Identity.Domain`, `Identit
 
 Crear el value object `UserId` en `Identity.Domain`. Record inmutable que envuelve un `Guid`. Métodos de fábrica `New()` y `From(Guid value)` que devuelve `Result<UserId>` validando que el guid no sea vacío. Preparar el `ValueConverter` para EF Core. Este ID también se referenciará desde otros servicios a través del SharedKernel o contratos compartidos.
 
-#### Fase 3.3 — Agregado ApplicationUser
+#### Fase 3.3 — Agregado ApplicationUser ----
 
 Crear el agregado `ApplicationUser` en `Identity.Domain` que hereda de `AggregateRoot` y de `IdentityUser<Guid>` para compatibilidad con ASP.NET Core Identity. Propiedades adicionales: `string FirstName`, `string LastName`, `DateTime CreatedAt`. Método de fábrica estático `Create(string email, string firstName, string lastName, DateTime)` que devuelve `Result<ApplicationUser>` y emite `UserRegisteredEvent`. Clase estática `UserErrors` con errores en español: `User.EmailAlreadyExists`, `User.InvalidEmail`, `User.NotFound`.
 

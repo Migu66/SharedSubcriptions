@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\..\shared\SharedKernel\SharedSubscriptions.SharedKernel\SharedSubscriptions.SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
 </Project>
