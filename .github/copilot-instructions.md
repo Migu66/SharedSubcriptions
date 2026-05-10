@@ -440,7 +440,7 @@ Crear el command `SettleDebtCommand` con propiedades `DebtId` y `UserId DebtorId
 
 Crear el command `SettleDebtManuallyCommand` con propiedades `DebtId` y `UserId CreditorId`. Crear el handler `SettleDebtManuallyCommandHandler` como `internal sealed class` que devuelve `Result`. El handler permite que el administrador (acreedor) marque la deuda como saldada manualmente, verificando que el solicitante es el acreedor. Crear el validador correspondiente.
 
-#### Fase 5.11 — Queries del Payments Service
+#### Fase 5.11 — Queries del Payments Service ----
 
 Crear la query `GetPaymentHistoryQuery` con propiedades `SubscriptionId` y su handler que devuelve `Result<IReadOnlyList<PaymentRecordDto>>`. Crear la query `GetPendingDebtsQuery` con propiedad `UserId` y su handler que devuelve `Result<IReadOnlyList<DebtDto>>`. Crear los DTOs `PaymentRecordDto` y `DebtDto` con todos los campos necesarios incluyendo el estado del semáforo calculado.
 
