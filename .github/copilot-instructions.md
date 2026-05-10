@@ -404,7 +404,7 @@ Es el quinto porque depende de que existan suscripciones (Subscriptions Service)
 
 Crear los cuatro proyectos de la Clean Architecture: `Payments.Domain`, `Payments.Application`, `Payments.Infrastructure` y `Payments.Api`. Configurar las referencias entre proyectos y añadirlos a la solución principal. Solo se crean los `.csproj` con los paquetes NuGet base de cada capa, incluyendo `Stripe.net` en Infrastructure.
 
-#### Fase 5.2 — Strongly-typed IDs: PaymentRecordId y DebtId
+#### Fase 5.2 — Strongly-typed IDs: PaymentRecordId y DebtId ----
 
 Crear los value objects `PaymentRecordId` y `DebtId` en `Payments.Domain` como records inmutables que envuelven un `Guid`. Ambos incluyen métodos de fábrica `New()` y `From(Guid value)` que devuelve `Result<T>` validando que el guid no sea vacío. Preparar los `ValueConverter` para EF Core.
 
