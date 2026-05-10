@@ -50,4 +50,47 @@ public sealed class Subscription : AggregateRoot<SubscriptionId>
 
         return Result.Success(subscription);
     }
+
+    public Result UpdatePrice(Money newCost, DateTime occurredOn)
+    {
+        var oldCost = TotalCost;
+        TotalCost = newCost;
+
+        RaiseDomainEvent(new SubscriptionPriceChangedEvent(
+            EventId: Guid.NewGuid(),
+            OccurredOn: occurredOn,
+            SubscriptionId: Id,
+            OldCost: oldCost,
+            NewCost: newCost));
+
+        return Result.Success();
+    }
+
+    public Result Deactivate(DateTime occurredOn)
+    {
+        if (!IsActive)
+            return Result.Failure(SubscriptionErrors.AlreadyInactive);
+
+        IsActive = false;
+
+        RaiseDomainEvent(new SubscriptionDeactivatedEvent(
+            EventId: Guid.NewGuid(),
+            OccurredOn: occurredOn,
+            SubscriptionId: Id));
+
+        return Result.Success();
+    }
+
+    public Result AdvanceBillingCycle(DateTime occurredOn)
+    {
+        BillingSchedule = BillingSchedule.CalculateNextBillingDate();
+
+        RaiseDomainEvent(new BillingCycleAdvancedEvent(
+            EventId: Guid.NewGuid(),
+            OccurredOn: occurredOn,
+            SubscriptionId: Id,
+            NewBillingDate: BillingSchedule.NextBillingDate));
+
+        return Result.Success();
+    }
 }
