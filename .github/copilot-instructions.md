@@ -444,7 +444,7 @@ Crear el command `SettleDebtManuallyCommand` con propiedades `DebtId` y `UserId 
 
 Crear la query `GetPaymentHistoryQuery` con propiedades `SubscriptionId` y su handler que devuelve `Result<IReadOnlyList<PaymentRecordDto>>`. Crear la query `GetPendingDebtsQuery` con propiedad `UserId` y su handler que devuelve `Result<IReadOnlyList<DebtDto>>`. Crear los DTOs `PaymentRecordDto` y `DebtDto` con todos los campos necesarios incluyendo el estado del semáforo calculado.
 
-#### Fase 5.12 — Integration Events del Payments Service
+#### Fase 5.12 — Integration Events del Payments Service ----
 
 Crear los integration events: `PaymentConfirmedIntegrationEvent` (con `PaymentRecordId`, `SubscriptionId`, `GroupId`, `UserId AdminId`, `Money TotalAmount`, `IReadOnlyList<MemberQuotaDto> Quotas`), `DebtCreatedIntegrationEvent` (con `DebtId`, `SubscriptionId`, `UserId DebtorId`, `UserId CreditorId`, `Money Amount`) y `DebtSettledIntegrationEvent` (con `DebtId`, `UserId DebtorId`, `Money Amount`). Crear los handlers de domain events que los publican mediante el patrón Outbox.
 
