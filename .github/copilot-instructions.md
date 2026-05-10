@@ -448,7 +448,7 @@ Crear la query `GetPaymentHistoryQuery` con propiedades `SubscriptionId` y su ha
 
 Crear los integration events: `PaymentConfirmedIntegrationEvent` (con `PaymentRecordId`, `SubscriptionId`, `GroupId`, `UserId AdminId`, `Money TotalAmount`, `IReadOnlyList<MemberQuotaDto> Quotas`), `DebtCreatedIntegrationEvent` (con `DebtId`, `SubscriptionId`, `UserId DebtorId`, `UserId CreditorId`, `Money Amount`) y `DebtSettledIntegrationEvent` (con `DebtId`, `UserId DebtorId`, `Money Amount`). Crear los handlers de domain events que los publican mediante el patrón Outbox.
 
-#### Fase 5.13 — Consumidores de eventos externos
+#### Fase 5.13 — Consumidores de eventos externos ----
 
 Crear en `Payments.Infrastructure` el consumidor `BillingDueSoonIntegrationEventConsumer` que reacciona al evento de cobro inminente y prepara las cuotas del próximo ciclo. Crear `MemberAddedToGroupIntegrationEventConsumer` que registra al nuevo miembro para el cálculo de prorrateo. Configurar ambos consumidores en MassTransit.
 
