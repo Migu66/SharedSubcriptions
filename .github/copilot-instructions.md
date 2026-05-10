@@ -412,7 +412,7 @@ Crear los value objects `PaymentRecordId` y `DebtId` en `Payments.Domain` como r
 
 Crear el value object `MemberQuota` en `Payments.Domain` como record inmutable con propiedades `UserId MemberId`, `decimal Amount`, `string Currency` y `bool IsProrrated`. El método de fábrica `Create(UserId, decimal amount, string currency, bool isProrrated)` devuelve `Result<MemberQuota>`. Incluye el método estático `Calculate(Money totalCost, int memberCount)` que devuelve la cuota base, y `CalculateProrrated(Money totalCost, int memberCount, int remainingDays, int totalDays)` que devuelve la cuota prorateada.
 
-#### Fase 5.4 — Agregado PaymentRecord
+#### Fase 5.4 — Agregado PaymentRecord ----
 
 Crear el agregado `PaymentRecord` en `Payments.Domain` que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `PaymentRecordId`, `SubscriptionId`, `GroupId`, `AdminId` de tipo `UserId`, `TotalAmount` de tipo `Money`, `PaidAt` de tipo `DateTime` e `IReadOnlyCollection<MemberQuota> MemberQuotas`. Método de fábrica `Create(SubscriptionId, GroupId, UserId adminId, Money, IReadOnlyList<MemberQuota>, DateTime)` que devuelve `Result<PaymentRecord>` y emite `PaymentRecordCreatedEvent`. Clase estática `PaymentRecordErrors` con errores en español.
 
