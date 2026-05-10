@@ -356,15 +356,15 @@ Crear el value object `BillingSchedule` en `Subscriptions.Domain` como record in
 
 Crear el agregado `Subscription` en `Subscriptions.Domain` que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `SubscriptionId`, `GroupId` (referencia al contexto de Groups), `ServiceName` (string), `TotalCost` de tipo `Money`, `BillingSchedule` de tipo `BillingSchedule`, `CreatedAt` y `IsActive`. Método de fábrica `Create(GroupId, string serviceName, Money, BillingSchedule, DateTime)` que devuelve `Result<Subscription>` y emite `SubscriptionCreatedEvent`. Clase estática `SubscriptionErrors` con errores en español.
 
-#### Fase 4.6 — Métodos de negocio del agregado Subscription
+#### Fase 4.6 — Métodos de negocio del agregado Subscription ----
 
 Añadir al agregado `Subscription` los métodos: `UpdatePrice(Money newCost)` que devuelve `Result` y emite `SubscriptionPriceChangedEvent`, `Deactivate()` que devuelve `Result` y emite `SubscriptionDeactivatedEvent`, y `AdvanceBillingCycle()` que actualiza la fecha de próximo cobro y emite `BillingCycleAdvancedEvent`.
 
-#### Fase 4.7 — Domain Events del Subscriptions Service
+#### Fase 4.7 — Domain Events del Subscriptions Service ----
 
 Crear los domain events: `SubscriptionCreatedEvent` (contiene `SubscriptionId`, `GroupId`, `string ServiceName`, `Money TotalCost`), `SubscriptionPriceChangedEvent` (contiene `SubscriptionId`, `Money OldCost`, `Money NewCost`) y `BillingCycleAdvancedEvent` (contiene `SubscriptionId`, `DateTime NewBillingDate`). Todos implementan `IDomainEvent` y son records inmutables.
 
-#### Fase 4.8 — Interfaz ISubscriptionRepository
+#### Fase 4.8 — Interfaz ISubscriptionRepository ----
 
 Crear la interfaz `ISubscriptionRepository` en `Subscriptions.Domain`. Métodos: `GetByIdAsync(SubscriptionId, CancellationToken)`, `AddAsync(Subscription, CancellationToken)`, `UpdateAsync(Subscription, CancellationToken)`, `GetByGroupIdAsync(GroupId, CancellationToken)` que devuelve `IReadOnlyList<Subscription>` y `GetDueSoonAsync(DateTime threshold, CancellationToken)` que devuelve las suscripciones próximas a vencer.
 
