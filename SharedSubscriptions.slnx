@@ -16,6 +16,12 @@
     <Project Path="services/Identity/Identity.Domain/Identity.Domain.csproj" />
     <Project Path="services/Identity/Identity.Infrastructure/Identity.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/services/Subscriptions/">
+    <Project Path="services/Subscriptions/Subscriptions.Api/Subscriptions.Api.csproj" />
+    <Project Path="services/Subscriptions/Subscriptions.Application/Subscriptions.Application.csproj" />
+    <Project Path="services/Subscriptions/Subscriptions.Domain/Subscriptions.Domain.csproj" />
+    <Project Path="services/Subscriptions/Subscriptions.Infrastructure/Subscriptions.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/shared/" />
   <Folder Name="/shared/SharedKernel/">
     <Project Path="shared/SharedKernel/SharedSubscriptions.SharedKernel/SharedSubscriptions.SharedKernel.csproj" />

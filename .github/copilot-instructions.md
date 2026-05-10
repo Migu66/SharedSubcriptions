@@ -336,7 +336,7 @@ Crear `Identity.Domain.Tests` con tests para `ApplicationUser`: creación exitos
 
 Es el cuarto porque depende de que existan grupos (Groups Service) y usuarios autenticados (Identity Service). Gestiona el agregado Subscription con sus value objects Money y BillingSchedule. Consume GroupCreatedIntegrationEvent y MemberRemovedIntegrationEvent. Emite BillingDueSoonIntegrationEvent que es el disparador de todo el flujo de pagos.
 
-#### Fase 4.1 — Estructura de proyectos del Subscriptions Service
+#### Fase 4.1 — Estructura de proyectos del Subscriptions Service ----
 
 Crear los cuatro proyectos de la Clean Architecture: `Subscriptions.Domain`, `Subscriptions.Application`, `Subscriptions.Infrastructure` y `Subscriptions.Api`. Configurar las referencias entre proyectos y añadirlos a la solución principal. Solo se crean los `.csproj` con los paquetes NuGet base de cada capa, sin ninguna clase de negocio.
 
