@@ -348,7 +348,7 @@ Crear el value object `SubscriptionId` en `Subscriptions.Domain` como record inm
 
 Crear el value object `Money` en `Subscriptions.Domain` como record inmutable con propiedades `decimal Amount` y `string Currency`. El método de fábrica estático `Create(decimal amount, string currency)` devuelve `Result<Money>`. Reglas de validación: el importe no puede ser negativo, la moneda debe ser un código ISO de tres letras no vacío. Clase estática `MoneyErrors` con los errores en español.
 
-#### Fase 4.4 — Value Object: BillingSchedule
+#### Fase 4.4 — Value Object: BillingSchedule ----
 
 Crear el value object `BillingSchedule` en `Subscriptions.Domain` como record inmutable con propiedad `BillingCycle` (enum con valores `Monthly` y `Annual`) y `DateTime NextBillingDate`. El método de fábrica `Create(BillingCycle cycle, DateTime nextBillingDate)` devuelve `Result<BillingSchedule>`. Incluye el método `CalculateNextBillingDate()` que avanza la fecha según el ciclo.
 
