@@ -456,7 +456,7 @@ Crear en `Payments.Infrastructure` el consumidor `BillingDueSoonIntegrationEvent
 
 Crear el servicio `StripePaymentService` en `Payments.Infrastructure` que envuelve la API de Stripe.net. Implementar el método `CreatePaymentIntentAsync(Money amount, UserId debtorId)` que crea un PaymentIntent en Stripe y devuelve el `client_secret`. Implementar el webhook handler para procesar los eventos `payment_intent.succeeded` de Stripe y llamar a `SettleDebtCommand`. Registrar el servicio en el contenedor de dependencias.
 
-#### Fase 5.15 — PaymentsDbContext, repositorios, endpoints, tests y Program.cs
+#### Fase 5.15 — PaymentsDbContext, repositorios, endpoints, tests y Program.cs ----
 
 Crear `PaymentsDbContext` con la configuración EF Core de los agregados `PaymentRecord` y `Debt`. Crear las implementaciones de repositorios. Crear la clase de extensión `PaymentEndpoints` con los endpoints: `POST /api/payments/confirm`, `POST /api/payments/debts/{debtId}/settle`, `POST /api/payments/debts/{debtId}/settle-manual`, `GET /api/payments/history/{subscriptionId}` y `GET /api/payments/debts/pending/{userId}`. Completar `Program.cs`. Crear `Payments.Domain.Tests` con tests para el cálculo de prorrateo y `Payments.Application.Tests` con tests para los command handlers.
 

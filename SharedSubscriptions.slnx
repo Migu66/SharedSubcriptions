@@ -26,7 +26,9 @@
   </Folder>
   <Folder Name="/services/Payments/">
     <Project Path="services/Payments/Payments.Api/Payments.Api.csproj" />
+    <Project Path="services/Payments/Payments.Application.Tests/Payments.Application.Tests.csproj" />
     <Project Path="services/Payments/Payments.Application/Payments.Application.csproj" />
+    <Project Path="services/Payments/Payments.Domain.Tests/Payments.Domain.Tests.csproj" />
     <Project Path="services/Payments/Payments.Domain/Payments.Domain.csproj" />
     <Project Path="services/Payments/Payments.Infrastructure/Payments.Infrastructure.csproj" />
   </Folder>

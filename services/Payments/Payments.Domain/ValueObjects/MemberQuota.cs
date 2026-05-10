@@ -5,10 +5,12 @@ namespace Payments.Domain.ValueObjects;
 
 public record MemberQuota
 {
-    public UserId MemberId { get; }
-    public decimal Amount { get; }
-    public string Currency { get; }
-    public bool IsProrrated { get; }
+    public UserId MemberId { get; private set; } = null!;
+    public decimal Amount { get; private set; }
+    public string Currency { get; private set; } = null!;
+    public bool IsProrrated { get; private set; }
+
+    private MemberQuota() { }
 
     private MemberQuota(UserId memberId, decimal amount, string currency, bool isProrrated)
     {
