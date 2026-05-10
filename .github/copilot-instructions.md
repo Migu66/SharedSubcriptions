@@ -344,7 +344,7 @@ Crear los cuatro proyectos de la Clean Architecture: `Subscriptions.Domain`, `Su
 
 Crear el value object `SubscriptionId` en `Subscriptions.Domain` como record inmutable que envuelve un `Guid`. Métodos de fábrica `New()` y `From(Guid value)` que devuelve `Result<SubscriptionId>` validando que el guid no sea vacío. Preparar el `ValueConverter` para EF Core.
 
-#### Fase 4.3 — Value Object: Money
+#### Fase 4.3 — Value Object: Money ----
 
 Crear el value object `Money` en `Subscriptions.Domain` como record inmutable con propiedades `decimal Amount` y `string Currency`. El método de fábrica estático `Create(decimal amount, string currency)` devuelve `Result<Money>`. Reglas de validación: el importe no puede ser negativo, la moneda debe ser un código ISO de tres letras no vacío. Clase estática `MoneyErrors` con los errores en español.
 
