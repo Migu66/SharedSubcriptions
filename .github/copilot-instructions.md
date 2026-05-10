@@ -452,7 +452,7 @@ Crear los integration events: `PaymentConfirmedIntegrationEvent` (con `PaymentRe
 
 Crear en `Payments.Infrastructure` el consumidor `BillingDueSoonIntegrationEventConsumer` que reacciona al evento de cobro inminente y prepara las cuotas del próximo ciclo. Crear `MemberAddedToGroupIntegrationEventConsumer` que registra al nuevo miembro para el cálculo de prorrateo. Configurar ambos consumidores en MassTransit.
 
-#### Fase 5.14 — Integración con Stripe
+#### Fase 5.14 — Integración con Stripe ----
 
 Crear el servicio `StripePaymentService` en `Payments.Infrastructure` que envuelve la API de Stripe.net. Implementar el método `CreatePaymentIntentAsync(Money amount, UserId debtorId)` que crea un PaymentIntent en Stripe y devuelve el `client_secret`. Implementar el webhook handler para procesar los eventos `payment_intent.succeeded` de Stripe y llamar a `SettleDebtCommand`. Registrar el servicio en el contenedor de dependencias.
 
