@@ -352,7 +352,7 @@ Crear el value object `Money` en `Subscriptions.Domain` como record inmutable co
 
 Crear el value object `BillingSchedule` en `Subscriptions.Domain` como record inmutable con propiedad `BillingCycle` (enum con valores `Monthly` y `Annual`) y `DateTime NextBillingDate`. El método de fábrica `Create(BillingCycle cycle, DateTime nextBillingDate)` devuelve `Result<BillingSchedule>`. Incluye el método `CalculateNextBillingDate()` que avanza la fecha según el ciclo.
 
-#### Fase 4.5 — Agregado Subscription
+#### Fase 4.5 — Agregado Subscription ----
 
 Crear el agregado `Subscription` en `Subscriptions.Domain` que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `SubscriptionId`, `GroupId` (referencia al contexto de Groups), `ServiceName` (string), `TotalCost` de tipo `Money`, `BillingSchedule` de tipo `BillingSchedule`, `CreatedAt` y `IsActive`. Método de fábrica `Create(GroupId, string serviceName, Money, BillingSchedule, DateTime)` que devuelve `Result<Subscription>` y emite `SubscriptionCreatedEvent`. Clase estática `SubscriptionErrors` con errores en español.
 
