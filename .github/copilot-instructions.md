@@ -408,7 +408,7 @@ Crear los cuatro proyectos de la Clean Architecture: `Payments.Domain`, `Payment
 
 Crear los value objects `PaymentRecordId` y `DebtId` en `Payments.Domain` como records inmutables que envuelven un `Guid`. Ambos incluyen métodos de fábrica `New()` y `From(Guid value)` que devuelve `Result<T>` validando que el guid no sea vacío. Preparar los `ValueConverter` para EF Core.
 
-#### Fase 5.3 — Value Object: MemberQuota
+#### Fase 5.3 — Value Object: MemberQuota ----
 
 Crear el value object `MemberQuota` en `Payments.Domain` como record inmutable con propiedades `UserId MemberId`, `decimal Amount`, `string Currency` y `bool IsProrrated`. El método de fábrica `Create(UserId, decimal amount, string currency, bool isProrrated)` devuelve `Result<MemberQuota>`. Incluye el método estático `Calculate(Money totalCost, int memberCount)` que devuelve la cuota base, y `CalculateProrrated(Money totalCost, int memberCount, int remainingDays, int totalDays)` que devuelve la cuota prorateada.
 
