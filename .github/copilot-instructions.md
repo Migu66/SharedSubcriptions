@@ -416,7 +416,7 @@ Crear el value object `MemberQuota` en `Payments.Domain` como record inmutable c
 
 Crear el agregado `PaymentRecord` en `Payments.Domain` que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `PaymentRecordId`, `SubscriptionId`, `GroupId`, `AdminId` de tipo `UserId`, `TotalAmount` de tipo `Money`, `PaidAt` de tipo `DateTime` e `IReadOnlyCollection<MemberQuota> MemberQuotas`. Método de fábrica `Create(SubscriptionId, GroupId, UserId adminId, Money, IReadOnlyList<MemberQuota>, DateTime)` que devuelve `Result<PaymentRecord>` y emite `PaymentRecordCreatedEvent`. Clase estática `PaymentRecordErrors` con errores en español.
 
-#### Fase 5.5 — Agregado Debt
+#### Fase 5.5 — Agregado Debt ----
 
 Crear el agregado `Debt` en `Payments.Domain` que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `DebtId`, `PaymentRecordId`, `DebtorId` de tipo `UserId`, `CreditorId` de tipo `UserId`, `Amount` de tipo `Money`, `Status` (enum `DebtStatus` con valores `Pending`, `Settled` y `Cancelled`), `CreatedAt` y `SettledAt` nullable. Método de fábrica `Create(PaymentRecordId, UserId debtorId, UserId creditorId, Money, DateTime)` que devuelve `Result<Debt>`. Método de negocio `Settle(DateTime settledAt)` que devuelve `Result` y emite `DebtSettledEvent`. Clase estática `DebtErrors` con errores en español.
 
