@@ -368,7 +368,7 @@ Crear los domain events: `SubscriptionCreatedEvent` (contiene `SubscriptionId`, 
 
 Crear la interfaz `ISubscriptionRepository` en `Subscriptions.Domain`. Métodos: `GetByIdAsync(SubscriptionId, CancellationToken)`, `AddAsync(Subscription, CancellationToken)`, `UpdateAsync(Subscription, CancellationToken)`, `GetByGroupIdAsync(GroupId, CancellationToken)` que devuelve `IReadOnlyList<Subscription>` y `GetDueSoonAsync(DateTime threshold, CancellationToken)` que devuelve las suscripciones próximas a vencer.
 
-#### Fase 4.9 — Command: CreateSubscription
+#### Fase 4.9 — Command: CreateSubscription ----
 
 Crear el command `CreateSubscriptionCommand` con propiedades `GroupId`, `UserId AdminId`, `string ServiceName`, `decimal TotalCost`, `string Currency`, `BillingCycle` y `DateTime FirstBillingDate`. Crear el handler `CreateSubscriptionCommandHandler` como `internal sealed class` que devuelve `Result<SubscriptionId>`. Crear el validador `CreateSubscriptionCommandValidator` con FluentValidation.
 
