@@ -7,5 +7,6 @@ public sealed record SubscriptionPriceChangedEvent(
     Guid EventId,
     DateTime OccurredOn,
     SubscriptionId SubscriptionId,
+    GroupId GroupId,
     Money OldCost,
     Money NewCost) : IDomainEvent;

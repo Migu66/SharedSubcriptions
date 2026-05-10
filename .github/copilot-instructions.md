@@ -372,27 +372,27 @@ Crear la interfaz `ISubscriptionRepository` en `Subscriptions.Domain`. Métodos:
 
 Crear el command `CreateSubscriptionCommand` con propiedades `GroupId`, `UserId AdminId`, `string ServiceName`, `decimal TotalCost`, `string Currency`, `BillingCycle` y `DateTime FirstBillingDate`. Crear el handler `CreateSubscriptionCommandHandler` como `internal sealed class` que devuelve `Result<SubscriptionId>`. Crear el validador `CreateSubscriptionCommandValidator` con FluentValidation.
 
-#### Fase 4.10 — Command: UpdateSubscriptionPrice
+#### Fase 4.10 — Command: UpdateSubscriptionPrice ----
 
 Crear el command `UpdateSubscriptionPriceCommand` con propiedades `SubscriptionId`, `UserId AdminId`, `decimal NewAmount` y `string Currency`. Crear el handler `UpdateSubscriptionPriceCommandHandler` que verifica que el solicitante es administrador del grupo, llama a `subscription.UpdatePrice(...)` y persiste el cambio. Crear el validador correspondiente.
 
-#### Fase 4.11 — Queries del Subscriptions Service
+#### Fase 4.11 — Queries del Subscriptions Service ----
 
 Crear la query `GetSubscriptionDetailsQuery` con propiedad `SubscriptionId` y su handler que devuelve `Result<SubscriptionDetailsDto>`. Crear la query `GetSubscriptionsByGroupQuery` con propiedad `GroupId` y su handler que devuelve `Result<IReadOnlyList<SubscriptionSummaryDto>>`. Crear los DTOs correspondientes con todos los campos necesarios.
 
-#### Fase 4.12 — Integration Events del Subscriptions Service
+#### Fase 4.12 — Integration Events del Subscriptions Service ----
 
 Crear los integration events: `SubscriptionCreatedIntegrationEvent`, `SubscriptionPriceChangedIntegrationEvent` (con `SubscriptionId`, `GroupId`, `Money OldCost`, `Money NewCost`, lista de `MemberIds` afectados) y `BillingDueSoonIntegrationEvent` (con `SubscriptionId`, `GroupId`, `string ServiceName`, `Money TotalCost`, `DateTime BillingDate`). Crear los handlers de domain events que los publican mediante el patrón Outbox.
 
-#### Fase 4.13 — Consumidor de eventos externos
+#### Fase 4.13 — Consumidor de eventos externos ----
 
 Crear en `Subscriptions.Infrastructure` el consumidor `MemberRemovedFromGroupIntegrationEventConsumer` que reacciona cuando un miembro es eliminado de un grupo y actualiza el recuento de participantes de las suscripciones activas de ese grupo. Configurar el consumidor en MassTransit.
 
-#### Fase 4.14 — SubscriptionsDbContext, repositorio, endpoints y Program.cs
+#### Fase 4.14 — SubscriptionsDbContext, repositorio, endpoints y Program.cs ----
 
 Crear `SubscriptionsDbContext` con la configuración EF Core del agregado `Subscription`. Crear `SubscriptionRepository` que implementa `ISubscriptionRepository`. Crear la clase de extensión `SubscriptionEndpoints` con los endpoints Minimal API: `POST /api/subscriptions`, `GET /api/subscriptions/{id}`, `GET /api/subscriptions/group/{groupId}` y `PUT /api/subscriptions/{id}/price`. Completar `Program.cs` con todos los registros de dependencias, MassTransit con Outbox, Serilog y la migración inicial.
 
-#### Fase 4.15 — Tests unitarios del Subscriptions Service
+#### Fase 4.15 — Tests unitarios del Subscriptions Service ----
 
 Crear `Subscriptions.Domain.Tests` con tests para el agregado `Subscription`: creación exitosa, actualización de precio, emisión correcta de domain events, desactivación. Tests para los value objects `Money` y `BillingSchedule`: creación válida y casos de error. Crear `Subscriptions.Application.Tests` con tests para los command handlers usando NSubstitute.
 

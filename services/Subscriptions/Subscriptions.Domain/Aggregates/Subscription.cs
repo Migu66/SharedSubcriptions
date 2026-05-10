@@ -60,6 +60,7 @@ public sealed class Subscription : AggregateRoot<SubscriptionId>
             EventId: Guid.NewGuid(),
             OccurredOn: occurredOn,
             SubscriptionId: Id,
+            GroupId: GroupId,
             OldCost: oldCost,
             NewCost: newCost));
 
