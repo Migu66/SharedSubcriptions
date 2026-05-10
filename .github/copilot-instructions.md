@@ -424,11 +424,11 @@ Crear el agregado `Debt` en `Payments.Domain` que hereda de `AggregateRoot`. Pro
 
 Crear los domain events: `PaymentRecordCreatedEvent` (contiene `PaymentRecordId`, `SubscriptionId`, `GroupId`, `UserId AdminId`, `IReadOnlyList<MemberQuota> Quotas`), `DebtSettledEvent` (contiene `DebtId`, `UserId DebtorId`, `UserId CreditorId`, `Money Amount`). Todos implementan `IDomainEvent` y son records inmutables.
 
-#### Fase 5.7 — Interfaces de repositorios del Payments Service
+#### Fase 5.7 — Interfaces de repositorios del Payments Service ----
 
 Crear `IPaymentRecordRepository` en `Payments.Domain` con métodos `GetByIdAsync`, `AddAsync`, `UpdateAsync` y `GetBySubscriptionIdAsync`. Crear `IDebtRepository` con `GetByIdAsync`, `AddAsync`, `UpdateAsync`, `GetPendingByDebtorIdAsync` y `GetPendingByCreditorIdAsync`.
 
-#### Fase 5.8 — Command: ConfirmAdminPayment
+#### Fase 5.8 — Command: ConfirmAdminPayment ----
 
 Crear el command `ConfirmAdminPaymentCommand` con propiedades `SubscriptionId`, `UserId AdminId`, `decimal TotalAmount`, `string Currency` y `DateTime PaidAt`. Crear el handler `ConfirmAdminPaymentCommandHandler` como `internal sealed class` que devuelve `Result<PaymentRecordId>`. El handler calcula las cuotas de cada miembro activo, crea el `PaymentRecord`, genera los objetos `Debt` para cada miembro y persiste todo en una sola transacción. Crear el validador correspondiente con FluentValidation.
 
