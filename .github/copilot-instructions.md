@@ -420,7 +420,7 @@ Crear el agregado `PaymentRecord` en `Payments.Domain` que hereda de `AggregateR
 
 Crear el agregado `Debt` en `Payments.Domain` que hereda de `AggregateRoot`. Propiedades: `Id` de tipo `DebtId`, `PaymentRecordId`, `DebtorId` de tipo `UserId`, `CreditorId` de tipo `UserId`, `Amount` de tipo `Money`, `Status` (enum `DebtStatus` con valores `Pending`, `Settled` y `Cancelled`), `CreatedAt` y `SettledAt` nullable. Método de fábrica `Create(PaymentRecordId, UserId debtorId, UserId creditorId, Money, DateTime)` que devuelve `Result<Debt>`. Método de negocio `Settle(DateTime settledAt)` que devuelve `Result` y emite `DebtSettledEvent`. Clase estática `DebtErrors` con errores en español.
 
-#### Fase 5.6 — Domain Events del Payments Service
+#### Fase 5.6 — Domain Events del Payments Service ----
 
 Crear los domain events: `PaymentRecordCreatedEvent` (contiene `PaymentRecordId`, `SubscriptionId`, `GroupId`, `UserId AdminId`, `IReadOnlyList<MemberQuota> Quotas`), `DebtSettledEvent` (contiene `DebtId`, `UserId DebtorId`, `UserId CreditorId`, `Money Amount`). Todos implementan `IDomainEvent` y son records inmutables.
 
