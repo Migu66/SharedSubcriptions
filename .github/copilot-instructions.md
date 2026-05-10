@@ -436,7 +436,7 @@ Crear el command `ConfirmAdminPaymentCommand` con propiedades `SubscriptionId`, 
 
 Crear el command `SettleDebtCommand` con propiedades `DebtId` y `UserId DebtorId`. Crear el handler `SettleDebtCommandHandler` como `internal sealed class` que devuelve `Result`. El handler carga la deuda, verifica que el solicitante es el deudor y llama a `debt.Settle(...)`. Crear el validador correspondiente.
 
-#### Fase 5.10 — Command: SettleDebtManually
+#### Fase 5.10 — Command: SettleDebtManually ----
 
 Crear el command `SettleDebtManuallyCommand` con propiedades `DebtId` y `UserId CreditorId`. Crear el handler `SettleDebtManuallyCommandHandler` como `internal sealed class` que devuelve `Result`. El handler permite que el administrador (acreedor) marque la deuda como saldada manualmente, verificando que el solicitante es el acreedor. Crear el validador correspondiente.
 
