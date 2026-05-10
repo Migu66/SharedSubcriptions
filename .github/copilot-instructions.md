@@ -432,7 +432,7 @@ Crear `IPaymentRecordRepository` en `Payments.Domain` con métodos `GetByIdAsync
 
 Crear el command `ConfirmAdminPaymentCommand` con propiedades `SubscriptionId`, `UserId AdminId`, `decimal TotalAmount`, `string Currency` y `DateTime PaidAt`. Crear el handler `ConfirmAdminPaymentCommandHandler` como `internal sealed class` que devuelve `Result<PaymentRecordId>`. El handler calcula las cuotas de cada miembro activo, crea el `PaymentRecord`, genera los objetos `Debt` para cada miembro y persiste todo en una sola transacción. Crear el validador correspondiente con FluentValidation.
 
-#### Fase 5.9 — Command: SettleDebt
+#### Fase 5.9 — Command: SettleDebt ----
 
 Crear el command `SettleDebtCommand` con propiedades `DebtId` y `UserId DebtorId`. Crear el handler `SettleDebtCommandHandler` como `internal sealed class` que devuelve `Result`. El handler carga la deuda, verifica que el solicitante es el deudor y llama a `debt.Settle(...)`. Crear el validador correspondiente.
 
