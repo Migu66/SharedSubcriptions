@@ -24,6 +24,12 @@
     <Project Path="services/Subscriptions/Subscriptions.Domain/Subscriptions.Domain.csproj" />
     <Project Path="services/Subscriptions/Subscriptions.Infrastructure/Subscriptions.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/services/Payments/">
+    <Project Path="services/Payments/Payments.Api/Payments.Api.csproj" />
+    <Project Path="services/Payments/Payments.Application/Payments.Application.csproj" />
+    <Project Path="services/Payments/Payments.Domain/Payments.Domain.csproj" />
+    <Project Path="services/Payments/Payments.Infrastructure/Payments.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/shared/" />
   <Folder Name="/shared/SharedKernel/">
     <Project Path="shared/SharedKernel/SharedSubscriptions.SharedKernel/SharedSubscriptions.SharedKernel.csproj" />

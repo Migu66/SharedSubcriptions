@@ -400,7 +400,7 @@ Crear `Subscriptions.Domain.Tests` con tests para el agregado `Subscription`: cr
 
 Es el quinto porque depende de que existan suscripciones (Subscriptions Service). Contiene la lógica de negocio más compleja: el cálculo prorrateado, la generación de deudas y la integración con Stripe. Consume BillingDueSoonIntegrationEvent y MemberAddedToGroupIntegrationEvent. Emite PaymentConfirmedIntegrationEvent y DebtSettledIntegrationEvent.
 
-#### Fase 5.1 — Estructura de proyectos del Payments Service
+#### Fase 5.1 — Estructura de proyectos del Payments Service ----
 
 Crear los cuatro proyectos de la Clean Architecture: `Payments.Domain`, `Payments.Application`, `Payments.Infrastructure` y `Payments.Api`. Configurar las referencias entre proyectos y añadirlos a la solución principal. Solo se crean los `.csproj` con los paquetes NuGet base de cada capa, incluyendo `Stripe.net` en Infrastructure.
 
