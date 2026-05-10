@@ -340,7 +340,7 @@ Es el cuarto porque depende de que existan grupos (Groups Service) y usuarios au
 
 Crear los cuatro proyectos de la Clean Architecture: `Subscriptions.Domain`, `Subscriptions.Application`, `Subscriptions.Infrastructure` y `Subscriptions.Api`. Configurar las referencias entre proyectos y añadirlos a la solución principal. Solo se crean los `.csproj` con los paquetes NuGet base de cada capa, sin ninguna clase de negocio.
 
-#### Fase 4.2 — Strongly-typed ID: SubscriptionId
+#### Fase 4.2 — Strongly-typed ID: SubscriptionId ----
 
 Crear el value object `SubscriptionId` en `Subscriptions.Domain` como record inmutable que envuelve un `Guid`. Métodos de fábrica `New()` y `From(Guid value)` que devuelve `Result<SubscriptionId>` validando que el guid no sea vacío. Preparar el `ValueConverter` para EF Core.
 
