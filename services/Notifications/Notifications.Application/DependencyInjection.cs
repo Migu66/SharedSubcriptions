@@ -24,5 +24,6 @@ public static class DependencyInjection
     public static void AddApplicationConsumers(this IBusRegistrationConfigurator cfg)
     {
         cfg.AddConsumer<BillingDueSoonIntegrationEventConsumer>();
+        cfg.AddConsumer<PaymentConfirmedIntegrationEventConsumer>();
     }
 }

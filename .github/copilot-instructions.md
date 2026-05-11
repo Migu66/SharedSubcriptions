@@ -480,7 +480,7 @@ Crear en `Notifications.Application` las interfaces de los canales: `IEmailSende
 
 Crear en `Notifications.Application` el consumidor `BillingDueSoonIntegrationEventConsumer` que implementa `IConsumer<BillingDueSoonIntegrationEvent>`. Al recibir el evento, construye el mensaje personalizado con el nombre del servicio, la fecha de cobro y el importe de la cuota, y lo envía a cada miembro del grupo por todos sus canales configurados. Registrar el consumidor en MassTransit.
 
-#### Fase 6.5 — Consumidor: PaymentConfirmedIntegrationEventConsumer
+#### Fase 6.5 — Consumidor: PaymentConfirmedIntegrationEventConsumer ----
 
 Crear el consumidor `PaymentConfirmedIntegrationEventConsumer` que notifica a cada miembro deudor que el administrador ha confirmado el pago al proveedor y que su deuda está pendiente de reembolso. El mensaje incluye el nombre del servicio, el importe de su cuota y un enlace directo al panel de pagos.
 
