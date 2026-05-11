@@ -488,7 +488,7 @@ Crear el consumidor `PaymentConfirmedIntegrationEventConsumer` que notifica a ca
 
 Crear el consumidor `DebtSettledIntegrationEventConsumer` que notifica al administrador (acreedor) que un miembro ha saldado su deuda. El mensaje incluye el nombre del miembro y el importe recibido.
 
-#### Fase 6.7 — Implementaciones de los canales de notificación
+#### Fase 6.7 — Implementaciones de los canales de notificación ----
 
 Crear en `Notifications.Infrastructure` las implementaciones: `SendGridEmailSender` que usa la API de SendGrid, `FirebasePushNotificationSender` que usa Firebase Admin SDK, `TelegramBotSender` que usa `Telegram.Bot` y `WhatsAppBusinessSender` que usa la API oficial de WhatsApp Business. Todas leen sus credenciales desde `appsettings.json`. Registrar todas las implementaciones en el contenedor de dependencias.
 
