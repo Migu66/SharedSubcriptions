@@ -25,5 +25,6 @@ public static class DependencyInjection
     {
         cfg.AddConsumer<BillingDueSoonIntegrationEventConsumer>();
         cfg.AddConsumer<PaymentConfirmedIntegrationEventConsumer>();
+        cfg.AddConsumer<DebtSettledIntegrationEventConsumer>();
     }
 }

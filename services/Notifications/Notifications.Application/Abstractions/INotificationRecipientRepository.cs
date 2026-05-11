@@ -13,6 +13,10 @@ public interface INotificationRecipientRepository
         GroupId groupId,
         CancellationToken cancellationToken = default);
 
+    Task<NotificationRecipientDto?> GetByUserIdAsync(
+        string userId,
+        CancellationToken cancellationToken = default);
+
     Task UpsertAsync(
         NotificationRecipientDto recipient,
         GroupId groupId,

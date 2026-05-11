@@ -484,7 +484,7 @@ Crear en `Notifications.Application` el consumidor `BillingDueSoonIntegrationEve
 
 Crear el consumidor `PaymentConfirmedIntegrationEventConsumer` que notifica a cada miembro deudor que el administrador ha confirmado el pago al proveedor y que su deuda está pendiente de reembolso. El mensaje incluye el nombre del servicio, el importe de su cuota y un enlace directo al panel de pagos.
 
-#### Fase 6.6 — Consumidor: DebtSettledIntegrationEventConsumer
+#### Fase 6.6 — Consumidor: DebtSettledIntegrationEventConsumer ----
 
 Crear el consumidor `DebtSettledIntegrationEventConsumer` que notifica al administrador (acreedor) que un miembro ha saldado su deuda. El mensaje incluye el nombre del miembro y el importe recibido.
 
