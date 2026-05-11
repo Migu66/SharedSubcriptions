@@ -516,7 +516,7 @@ Crear en `Analytics.Application` los consumidores: `PaymentConfirmedIntegrationE
 
 Crear la query `GetGroupSavingsQuery` con propiedad `GroupId` y `int Year`, handler que devuelve `Result<GroupSavingsDto>`. Crear la query `GetServiceSpendingQuery` con propiedad `GroupId`, handler que devuelve `Result<IReadOnlyList<ServiceSpendingDto>>`. Crear la query `GetDebtHistoryQuery` con propiedad `UserId`, handler que devuelve `Result<DebtHistoryDto>`. Crear los DTOs correspondientes.
 
-#### Fase 7.5 — AnalyticsDbContext y repositorios
+#### Fase 7.5 — AnalyticsDbContext y repositorios ----
 
 Crear `AnalyticsDbContext` con las tablas para cada read model. Crear las interfaces `IGroupSavingsRepository`, `IServiceSpendingRepository` e `IDebtHistoryRepository` en `Analytics.Domain`, con sus implementaciones en `Analytics.Infrastructure`. Los métodos de escritura son llamados solo desde los consumidores de eventos.
 
