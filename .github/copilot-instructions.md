@@ -464,11 +464,11 @@ Crear `PaymentsDbContext` con la configuración EF Core de los agregados `Paymen
 
 Es el sexto porque solo reacciona a eventos de los demás servicios. No tiene lógica de negocio propia. Consume BillingDueSoonIntegrationEvent, PaymentConfirmedIntegrationEvent y MemberAddedToGroupIntegrationEvent. Integra con Telegram.Bot, la API de WhatsApp Business, SendGrid y Firebase Cloud Messaging.
 
-#### Fase 6.1 — Estructura de proyectos del Notifications Service
+#### Fase 6.1 — Estructura de proyectos del Notifications Service ----
 
 Crear los cuatro proyectos de la Clean Architecture: `Notifications.Domain`, `Notifications.Application`, `Notifications.Infrastructure` y `Notifications.Api`. Configurar las referencias entre proyectos y añadirlos a la solución principal. En Infrastructure añadir los paquetes NuGet: `Telegram.Bot`, `SendGrid` y `FirebaseAdmin`. En este paso no se escribe ninguna clase de negocio.
 
-#### Fase 6.2 — Strongly-typed ID y entidad NotificationLog
+#### Fase 6.2 — Strongly-typed ID y entidad NotificationLog ----
 
 Crear el value object `NotificationId` en `Notifications.Domain` como record inmutable que envuelve un `Guid`. Crear la entidad `NotificationLog` con propiedades `NotificationId Id`, `string RecipientUserId`, `string Channel` (enum `NotificationChannel` con valores `Email`, `Push`, `Telegram` y `WhatsApp`), `string Message`, `DateTime SentAt` y `bool Success`. Esta entidad sirve para auditar todos los envíos realizados.
 
