@@ -528,7 +528,7 @@ Crear la clase de extensión `AnalyticsEndpoints` con los endpoints: `GET /api/a
 
 Completar `Program.cs` del proyecto `Analytics.Api`. Registrar `AnalyticsDbContext`, los repositorios, MediatR con los query handlers, MassTransit con todos los consumidores, autenticación JWT Bearer, Serilog y los endpoints. Crear la migración inicial.
 
-#### Fase 7.8 — Tests del Analytics Service
+#### Fase 7.8 — Tests del Analytics Service ----
 
 Crear `Analytics.Application.Tests` con tests para los consumidores de eventos: verificar que `PaymentConfirmedIntegrationEventConsumer` actualiza correctamente los read models, y que `DebtSettledIntegrationEventConsumer` incrementa el contador de deudas saldadas. Usar NSubstitute para los repositorios.
 
@@ -536,7 +536,7 @@ Crear `Analytics.Application.Tests` con tests para los consumidores de eventos: 
 
 Una vez que todos los servicios tienen sus endpoints funcionando, se configura el API Gateway con YARP. Define las rutas hacia cada microservicio, centraliza la autenticación JWT y aplica rate limiting.
 
-#### Fase 8.1 — Estructura del proyecto ApiGateway
+#### Fase 8.1 — Estructura del proyecto ApiGateway ----
 
 Crear el proyecto `ApiGateway` como una aplicación ASP.NET Core vacía de .NET 10. Añadirlo a la solución principal. Añadir el paquete NuGet `Yarp.ReverseProxy`. En este paso no se configura ninguna ruta, solo la estructura base y el `.csproj`.
 
