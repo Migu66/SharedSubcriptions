@@ -476,7 +476,7 @@ Crear el value object `NotificationId` en `Notifications.Domain` como record inm
 
 Crear en `Notifications.Application` las interfaces de los canales: `IEmailSender` con método `SendAsync(string to, string subject, string body, CancellationToken)`, `IPushNotificationSender` con método `SendAsync(string deviceToken, string title, string body, CancellationToken)`, `ITelegramSender` con método `SendAsync(string chatId, string message, CancellationToken)` y `IWhatsAppSender` con método `SendAsync(string phoneNumber, string message, CancellationToken)`. Todas devuelven `Task<Result>`.
 
-#### Fase 6.4 — Consumidor: BillingDueSoonIntegrationEventConsumer
+#### Fase 6.4 — Consumidor: BillingDueSoonIntegrationEventConsumer ----
 
 Crear en `Notifications.Application` el consumidor `BillingDueSoonIntegrationEventConsumer` que implementa `IConsumer<BillingDueSoonIntegrationEvent>`. Al recibir el evento, construye el mensaje personalizado con el nombre del servicio, la fecha de cobro y el importe de la cuota, y lo envía a cada miembro del grupo por todos sus canales configurados. Registrar el consumidor en MassTransit.
 
