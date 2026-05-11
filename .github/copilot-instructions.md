@@ -512,7 +512,7 @@ Crear en `Analytics.Domain` los read models que este servicio mantiene: `GroupSa
 
 Crear en `Analytics.Application` los consumidores: `PaymentConfirmedIntegrationEventConsumer` que actualiza `GroupSavingsReadModel` y `ServiceSpendingReadModel`, y `DebtSettledIntegrationEventConsumer` que actualiza `DebtHistoryReadModel`. Crear también `SubscriptionCreatedIntegrationEventConsumer` y `MemberAddedToGroupIntegrationEventConsumer` para mantener el contexto necesario en las proyecciones. Registrar todos en MassTransit.
 
-#### Fase 7.4 — Queries del Analytics Service
+#### Fase 7.4 — Queries del Analytics Service ----
 
 Crear la query `GetGroupSavingsQuery` con propiedad `GroupId` y `int Year`, handler que devuelve `Result<GroupSavingsDto>`. Crear la query `GetServiceSpendingQuery` con propiedad `GroupId`, handler que devuelve `Result<IReadOnlyList<ServiceSpendingDto>>`. Crear la query `GetDebtHistoryQuery` con propiedad `UserId`, handler que devuelve `Result<DebtHistoryDto>`. Crear los DTOs correspondientes.
 
