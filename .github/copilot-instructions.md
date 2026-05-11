@@ -472,7 +472,7 @@ Crear los cuatro proyectos de la Clean Architecture: `Notifications.Domain`, `No
 
 Crear el value object `NotificationId` en `Notifications.Domain` como record inmutable que envuelve un `Guid`. Crear la entidad `NotificationLog` con propiedades `NotificationId Id`, `string RecipientUserId`, `string Channel` (enum `NotificationChannel` con valores `Email`, `Push`, `Telegram` y `WhatsApp`), `string Message`, `DateTime SentAt` y `bool Success`. Esta entidad sirve para auditar todos los envíos realizados.
 
-#### Fase 6.3 — Interfaces de canales de notificación
+#### Fase 6.3 — Interfaces de canales de notificación ----
 
 Crear en `Notifications.Application` las interfaces de los canales: `IEmailSender` con método `SendAsync(string to, string subject, string body, CancellationToken)`, `IPushNotificationSender` con método `SendAsync(string deviceToken, string title, string body, CancellationToken)`, `ITelegramSender` con método `SendAsync(string chatId, string message, CancellationToken)` y `IWhatsAppSender` con método `SendAsync(string phoneNumber, string message, CancellationToken)`. Todas devuelven `Task<Result>`.
 
