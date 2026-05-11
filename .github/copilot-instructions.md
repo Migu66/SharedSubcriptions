@@ -504,11 +504,11 @@ Es el séptimo porque consume eventos de todos los demás servicios para constru
 
 Crear los cuatro proyectos de la Clean Architecture: `Analytics.Domain`, `Analytics.Application`, `Analytics.Infrastructure` y `Analytics.Api`. Configurar las referencias entre proyectos y añadirlos a la solución principal. Este servicio no tiene Commands, solo Queries y consumidores de eventos. Solo se crean los `.csproj` con los paquetes NuGet base de cada capa.
 
-#### Fase 7.2 — Read Models
+#### Fase 7.2 — Read Models ----
 
 Crear en `Analytics.Domain` los read models que este servicio mantiene: `GroupSavingsReadModel` (con `GroupId`, `int Year`, `decimal TotalSpent`, `decimal EstimatedSavings`), `ServiceSpendingReadModel` (con `string ServiceName`, `decimal TotalSpent`, `int PaymentCount`) y `DebtHistoryReadModel` (con `UserId`, `decimal TotalDebt`, `decimal TotalSettled`, `int PendingCount`). Son clases planas de solo lectura sin lógica de dominio.
 
-#### Fase 7.3 — Consumidores de eventos de integración
+#### Fase 7.3 — Consumidores de eventos de integración ----
 
 Crear en `Analytics.Application` los consumidores: `PaymentConfirmedIntegrationEventConsumer` que actualiza `GroupSavingsReadModel` y `ServiceSpendingReadModel`, y `DebtSettledIntegrationEventConsumer` que actualiza `DebtHistoryReadModel`. Crear también `SubscriptionCreatedIntegrationEventConsumer` y `MemberAddedToGroupIntegrationEventConsumer` para mantener el contexto necesario en las proyecciones. Registrar todos en MassTransit.
 
