@@ -492,7 +492,7 @@ Crear el consumidor `DebtSettledIntegrationEventConsumer` que notifica al admini
 
 Crear en `Notifications.Infrastructure` las implementaciones: `SendGridEmailSender` que usa la API de SendGrid, `FirebasePushNotificationSender` que usa Firebase Admin SDK, `TelegramBotSender` que usa `Telegram.Bot` y `WhatsAppBusinessSender` que usa la API oficial de WhatsApp Business. Todas leen sus credenciales desde `appsettings.json`. Registrar todas las implementaciones en el contenedor de dependencias.
 
-#### Fase 6.8 — NotificationsDbContext, Program.cs y tests
+#### Fase 6.8 — NotificationsDbContext, Program.cs y tests ----
 
 Crear `NotificationsDbContext` con la tabla `NotificationLog` para auditoría. Completar `Program.cs` con el registro de todos los consumidores de MassTransit, los senders, Serilog y la migración inicial. Crear `Notifications.Application.Tests` con tests para los consumidores usando NSubstitute para verificar que se llama al canal correcto con el mensaje esperado en cada escenario.
 
@@ -500,7 +500,7 @@ Crear `NotificationsDbContext` con la tabla `NotificationLog` para auditoría. C
 
 Es el séptimo porque consume eventos de todos los demás servicios para construir sus proyecciones. Es un servicio de solo lectura con CQRS puro (solo Queries, sin Commands). Mantiene read models optimizados para los gráficos del dashboard: ahorro anual por grupo, gasto por servicio y evolución histórica de deudas.
 
-#### Fase 7.1 — Estructura de proyectos del Analytics Service
+#### Fase 7.1 — Estructura de proyectos del Analytics Service ----
 
 Crear los cuatro proyectos de la Clean Architecture: `Analytics.Domain`, `Analytics.Application`, `Analytics.Infrastructure` y `Analytics.Api`. Configurar las referencias entre proyectos y añadirlos a la solución principal. Este servicio no tiene Commands, solo Queries y consumidores de eventos. Solo se crean los `.csproj` con los paquetes NuGet base de cada capa.
 
@@ -528,7 +528,7 @@ Crear la clase de extensión `AnalyticsEndpoints` con los endpoints: `GET /api/a
 
 Completar `Program.cs` del proyecto `Analytics.Api`. Registrar `AnalyticsDbContext`, los repositorios, MediatR con los query handlers, MassTransit con todos los consumidores, autenticación JWT Bearer, Serilog y los endpoints. Crear la migración inicial.
 
-#### Fase 7.8 — Tests del Analytics Service ----
+#### Fase 7.8 — Tests del Analytics Service
 
 Crear `Analytics.Application.Tests` con tests para los consumidores de eventos: verificar que `PaymentConfirmedIntegrationEventConsumer` actualiza correctamente los read models, y que `DebtSettledIntegrationEventConsumer` incrementa el contador de deudas saldadas. Usar NSubstitute para los repositorios.
 
@@ -536,7 +536,7 @@ Crear `Analytics.Application.Tests` con tests para los consumidores de eventos: 
 
 Una vez que todos los servicios tienen sus endpoints funcionando, se configura el API Gateway con YARP. Define las rutas hacia cada microservicio, centraliza la autenticación JWT y aplica rate limiting.
 
-#### Fase 8.1 — Estructura del proyecto ApiGateway ----
+#### Fase 8.1 — Estructura del proyecto ApiGateway
 
 Crear el proyecto `ApiGateway` como una aplicación ASP.NET Core vacía de .NET 10. Añadirlo a la solución principal. Añadir el paquete NuGet `Yarp.ReverseProxy`. En este paso no se configura ninguna ruta, solo la estructura base y el `.csproj`.
 
