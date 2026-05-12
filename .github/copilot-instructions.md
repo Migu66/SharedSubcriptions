@@ -540,7 +540,7 @@ Una vez que todos los servicios tienen sus endpoints funcionando, se configura e
 
 Crear el proyecto `ApiGateway` como una aplicación ASP.NET Core vacía de .NET 10. Añadirlo a la solución principal. Añadir el paquete NuGet `Yarp.ReverseProxy`. En este paso no se configura ninguna ruta, solo la estructura base y el `.csproj`.
 
-#### Fase 8.2 — Configuración de rutas YARP
+#### Fase 8.2 — Configuración de rutas YARP ----
 
 Configurar en `appsettings.json` las rutas y clusters de YARP que apuntan a cada microservicio: Groups Service, Identity Service, Subscriptions Service, Payments Service, Notifications Service y Analytics Service. Cada cluster define la dirección del destino leída desde variables de entorno para poder cambiarse entre entornos sin recompilar.
 
