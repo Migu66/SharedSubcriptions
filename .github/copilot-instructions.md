@@ -520,7 +520,7 @@ Crear la query `GetGroupSavingsQuery` con propiedad `GroupId` y `int Year`, hand
 
 Crear `AnalyticsDbContext` con las tablas para cada read model. Crear las interfaces `IGroupSavingsRepository`, `IServiceSpendingRepository` e `IDebtHistoryRepository` en `Analytics.Domain`, con sus implementaciones en `Analytics.Infrastructure`. Los métodos de escritura son llamados solo desde los consumidores de eventos.
 
-#### Fase 7.6 — Endpoints Minimal API del Analytics Service
+#### Fase 7.6 — Endpoints Minimal API del Analytics Service ----
 
 Crear la clase de extensión `AnalyticsEndpoints` con los endpoints: `GET /api/analytics/groups/{groupId}/savings` (GetGroupSavings), `GET /api/analytics/groups/{groupId}/spending` (GetServiceSpending) y `GET /api/analytics/users/{userId}/debts` (GetDebtHistory). Todos requieren autenticación JWT. Solo invocan a MediatR.
 
