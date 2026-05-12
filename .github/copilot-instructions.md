@@ -544,7 +544,7 @@ Crear el proyecto `ApiGateway` como una aplicación ASP.NET Core vacía de .NET 
 
 Configurar en `appsettings.json` las rutas y clusters de YARP que apuntan a cada microservicio: Groups Service, Identity Service, Subscriptions Service, Payments Service, Notifications Service y Analytics Service. Cada cluster define la dirección del destino leída desde variables de entorno para poder cambiarse entre entornos sin recompilar.
 
-#### Fase 8.3 — Autenticación centralizada JWT
+#### Fase 8.3 — Autenticación centralizada JWT ----
 
 Configurar la validación del token JWT en el API Gateway mediante `AddAuthentication` con `JwtBearer`. Todos los endpoints protegidos requieren el token emitido por Identity Service. Las rutas públicas (`/api/auth/register` y `/api/auth/login`) se marcan explícitamente como `AllowAnonymous` en la configuración de YARP.
 
