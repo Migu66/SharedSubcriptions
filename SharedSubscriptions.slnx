@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/gateways/">
+    <Project Path="gateways/ApiGateway.Tests/ApiGateway.Tests.csproj" />
     <Project Path="gateways/ApiGateway/ApiGateway.csproj" />
   </Folder>
   <Folder Name="/services/" />

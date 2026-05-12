@@ -552,7 +552,7 @@ Configurar la validación del token JWT en el API Gateway mediante `AddAuthentic
 
 Añadir rate limiting global con `AddRateLimiter` usando la política de ventana fija: máximo 100 peticiones por minuto por IP. Añadir middleware de logging de peticiones con Serilog. Añadir middleware de manejo de errores que devuelve respuestas Problem Details consistentes.
 
-#### Fase 8.5 — Program.cs y tests de integración del Gateway
+#### Fase 8.5 — Program.cs y tests de integración del Gateway ----
 
 Completar `Program.cs` registrando YARP, la autenticación JWT, el rate limiter y los middlewares en el orden correcto. Crear el proyecto `ApiGateway.Tests` con tests de integración usando `WebApplicationFactory` que verifican el enrutamiento correcto hacia cada servicio y que los endpoints protegidos rechazan peticiones sin token.
 
