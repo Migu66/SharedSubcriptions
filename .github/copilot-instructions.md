@@ -524,7 +524,7 @@ Crear `AnalyticsDbContext` con las tablas para cada read model. Crear las interf
 
 Crear la clase de extensión `AnalyticsEndpoints` con los endpoints: `GET /api/analytics/groups/{groupId}/savings` (GetGroupSavings), `GET /api/analytics/groups/{groupId}/spending` (GetServiceSpending) y `GET /api/analytics/users/{userId}/debts` (GetDebtHistory). Todos requieren autenticación JWT. Solo invocan a MediatR.
 
-#### Fase 7.7 — Program.cs y registro de dependencias
+#### Fase 7.7 — Program.cs y registro de dependencias ----
 
 Completar `Program.cs` del proyecto `Analytics.Api`. Registrar `AnalyticsDbContext`, los repositorios, MediatR con los query handlers, MassTransit con todos los consumidores, autenticación JWT Bearer, Serilog y los endpoints. Crear la migración inicial.
 
