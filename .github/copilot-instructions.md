@@ -548,7 +548,7 @@ Configurar en `appsettings.json` las rutas y clusters de YARP que apuntan a cada
 
 Configurar la validación del token JWT en el API Gateway mediante `AddAuthentication` con `JwtBearer`. Todos los endpoints protegidos requieren el token emitido por Identity Service. Las rutas públicas (`/api/auth/register` y `/api/auth/login`) se marcan explícitamente como `AllowAnonymous` en la configuración de YARP.
 
-#### Fase 8.4 — Rate limiting y middlewares
+#### Fase 8.4 — Rate limiting y middlewares ----
 
 Añadir rate limiting global con `AddRateLimiter` usando la política de ventana fija: máximo 100 peticiones por minuto por IP. Añadir middleware de logging de peticiones con Serilog. Añadir middleware de manejo de errores que devuelve respuestas Problem Details consistentes.
 
