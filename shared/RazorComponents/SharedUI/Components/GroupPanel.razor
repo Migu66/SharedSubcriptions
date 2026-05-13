@@ -1,0 +1,76 @@
+@namespace SharedUI.Components
+@using SharedUI.Models
+
+<div class="group-panel">
+    <header class="group-panel__header">
+        <h2 class="group-panel__title">@Group.Name</h2>
+        <span class="group-panel__meta">@Group.Members.Count miembro(s)</span>
+    </header>
+
+    <section class="group-panel__members">
+        <h3 class="group-panel__section-title">Miembros</h3>
+        <ul class="group-panel__member-list" aria-label="Lista de miembros">
+            @foreach (var member in Group.Members)
+            {
+                <li class="group-panel__member">
+                    <div class="group-panel__member-info">
+                        <span class="group-panel__member-email">@member.Email</span>
+                        <span class="group-panel__member-role @(member.Role == "Admin" ? "group-panel__member-role--admin" : "")">
+                            @member.Role
+                        </span>
+                    </div>
+
+                    <div class="group-panel__member-actions">
+                        <PaymentStatusBadge Status="@member.PaymentStatus" />
+
+                        @if (IsAdmin && member.Id != Group.AdminId)
+                        {
+                            <button class="group-panel__btn-remove"
+                                    aria-label="Eliminar a @member.Email del grupo"
+                                    @onclick="() => OnRemoveMember.InvokeAsync(member.Id)">
+                                Eliminar
+                            </button>
+                        }
+                    </div>
+                </li>
+            }
+        </ul>
+    </section>
+
+    @if (IsAdmin)
+    {
+        <footer class="group-panel__footer">
+            <button class="group-panel__btn-add"
+                    aria-label="Añadir miembro al grupo"
+                    @onclick="() => OnAddMember.InvokeAsync()">
+                + Añadir miembro
+            </button>
+        </footer>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public GroupModel Group { get; set; } = default!;
+
+    /// <summary>
+    /// Indica si el usuario actual es administrador del grupo.
+    /// Controla la visibilidad de los botones de añadir y eliminar.
+    /// </summary>
+    [Parameter]
+    public bool IsAdmin { get; set; }
+
+    /// <summary>
+    /// Se dispara cuando el administrador pulsa "Añadir miembro".
+    /// El componente padre es responsable de mostrar el formulario.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnAddMember { get; set; }
+
+    /// <summary>
+    /// Se dispara cuando el administrador pulsa "Eliminar" en un miembro.
+    /// Recibe el Guid del miembro a eliminar.
+    /// </summary>
+    [Parameter]
+    public EventCallback<Guid> OnRemoveMember { get; set; }
+}

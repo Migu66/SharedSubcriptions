@@ -568,7 +568,7 @@ Crear el proyecto `SharedUI` como una Razor Class Library de .NET 10. Añadirlo 
 
 Crear el componente Razor `PaymentStatusBadge` que recibe un parámetro `PaymentStatus` (enum con valores `Green`, `Yellow` y `Red`) y renderiza el indicador visual correspondiente. Verde para pagado, amarillo para pendiente con menos de un día, rojo para moroso. El componente debe ser prominente y accesible, con soporte para aria-labels.
 
-#### Fase 9.3 — Componente: GroupPanel
+#### Fase 9.3 — Componente: GroupPanel ----
 
 Crear el componente Razor `GroupPanel` que muestra el resumen de un grupo: nombre, número de miembros, suscripciones activas y el estado del semáforo de cada miembro. Acepta parámetros `GroupDetailsDto` y `IReadOnlyList<MemberDto>`. Incluye un `EventCallback` para las acciones de añadir y eliminar miembros.
 

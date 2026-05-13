@@ -1,0 +1,124 @@
+/* =============================================
+   GroupPanel — panel de grupo con miembros
+   ============================================= */
+
+.group-panel {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Cabecera */
+.group-panel__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.group-panel__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0;
+    color: #111827;
+}
+
+.group-panel__meta {
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+/* Sección de título */
+.group-panel__section-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 0.5rem 0;
+}
+
+/* Lista de miembros */
+.group-panel__member-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.group-panel__member {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+}
+
+.group-panel__member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.group-panel__member-email {
+    font-size: 0.875rem;
+    color: #111827;
+}
+
+.group-panel__member-role {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.group-panel__member-role--admin {
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+.group-panel__member-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Botón eliminar */
+.group-panel__btn-remove {
+    font-size: 0.75rem;
+    color: #dc2626;
+    background: none;
+    border: 1px solid #fca5a5;
+    border-radius: 0.375rem;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+}
+
+.group-panel__btn-remove:hover {
+    background: #fee2e2;
+}
+
+/* Footer — añadir miembro */
+.group-panel__footer {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 0.75rem;
+}
+
+.group-panel__btn-add {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #2563eb;
+    background: none;
+    border: 1px dashed #93c5fd;
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.875rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.group-panel__btn-add:hover {
+    background: #eff6ff;
+}
