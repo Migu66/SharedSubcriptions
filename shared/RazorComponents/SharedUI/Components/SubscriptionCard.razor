@@ -1,0 +1,64 @@
+@namespace SharedUI.Components
+@using SharedUI.Models
+
+<div class="subscription-card @(!Subscription.IsActive ? "subscription-card--inactive" : "")">
+    <header class="subscription-card__header">
+        <h3 class="subscription-card__title">@Subscription.ServiceName</h3>
+        @if (!Subscription.IsActive)
+        {
+            <span class="subscription-card__inactive-badge" aria-label="Suscripción inactiva">Inactiva</span>
+        }
+    </header>
+
+    <dl class="subscription-card__details">
+        <div class="subscription-card__row">
+            <dt>Coste total</dt>
+            <dd>@Subscription.TotalCost.ToString("F2") @Subscription.Currency / @CycleLabel</dd>
+        </div>
+        <div class="subscription-card__row">
+            <dt>Tu cuota</dt>
+            <dd class="subscription-card__quota">@Subscription.IndividualQuota.ToString("F2") @Subscription.Currency</dd>
+        </div>
+        <div class="subscription-card__row">
+            <dt>Próximo cobro</dt>
+            <dd>@Subscription.NextBillingDate.ToString("dd/MM/yyyy")</dd>
+        </div>
+    </dl>
+
+    @if (IsAdmin && Subscription.IsActive)
+    {
+        <footer class="subscription-card__footer">
+            <button class="subscription-card__btn-confirm"
+                    aria-label="Confirmar pago de @Subscription.ServiceName"
+                    @onclick="() => OnConfirmPayment.InvokeAsync(Subscription.Id)">
+                Confirmar pago
+            </button>
+        </footer>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public SubscriptionModel Subscription { get; set; } = default!;
+
+    /// <summary>
+    /// Indica si el usuario actual es administrador.
+    /// Controla la visibilidad del botón "Confirmar pago".
+    /// </summary>
+    [Parameter]
+    public bool IsAdmin { get; set; }
+
+    /// <summary>
+    /// Se dispara cuando el administrador pulsa "Confirmar pago".
+    /// Recibe el Guid de la suscripción.
+    /// </summary>
+    [Parameter]
+    public EventCallback<Guid> OnConfirmPayment { get; set; }
+
+    private string CycleLabel => Subscription.BillingCycle switch
+    {
+        "Monthly" => "mes",
+        "Annual"  => "año",
+        _         => Subscription.BillingCycle
+    };
+}

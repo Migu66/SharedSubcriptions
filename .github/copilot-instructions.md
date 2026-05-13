@@ -572,7 +572,7 @@ Crear el componente Razor `PaymentStatusBadge` que recibe un parámetro `Payment
 
 Crear el componente Razor `GroupPanel` que muestra el resumen de un grupo: nombre, número de miembros, suscripciones activas y el estado del semáforo de cada miembro. Acepta parámetros `GroupDetailsDto` y `IReadOnlyList<MemberDto>`. Incluye un `EventCallback` para las acciones de añadir y eliminar miembros.
 
-#### Fase 9.4 — Componente: SubscriptionCard
+#### Fase 9.4 — Componente: SubscriptionCard ----
 
 Crear el componente Razor `SubscriptionCard` que muestra el detalle de una suscripción: nombre del servicio, coste total, cuota individual, próxima fecha de cobro y estado del ciclo. Acepta un parámetro `SubscriptionSummaryDto`. Incluye un botón para confirmar el pago visible solo para el administrador.
 
