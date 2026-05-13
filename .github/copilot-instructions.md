@@ -576,7 +576,7 @@ Crear el componente Razor `GroupPanel` que muestra el resumen de un grupo: nombr
 
 Crear el componente Razor `SubscriptionCard` que muestra el detalle de una suscripción: nombre del servicio, coste total, cuota individual, próxima fecha de cobro y estado del ciclo. Acepta un parámetro `SubscriptionSummaryDto`. Incluye un botón para confirmar el pago visible solo para el administrador.
 
-#### Fase 9.5 — Componente: SavingsChart
+#### Fase 9.5 — Componente: SavingsChart ----
 
 Crear el componente Razor `SavingsChart` que muestra un gráfico del ahorro anual del grupo. Acepta un parámetro `GroupSavingsDto`. Usa una librería de gráficos compatible con Blazor (por ejemplo, `Blazor.ApexCharts`) para renderizar el gráfico de barras con el gasto mensual acumulado frente al coste individual estimado sin el reparto.
 

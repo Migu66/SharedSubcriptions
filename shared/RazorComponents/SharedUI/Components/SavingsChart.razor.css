@@ -1,0 +1,36 @@
+/* =============================================
+   SavingsChart — gráfico de ahorro anual
+   ============================================= */
+
+.savings-chart {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.savings-chart__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.savings-chart__title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    color: #111827;
+}
+
+.savings-chart__subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+.savings-chart__subtitle strong {
+    color: #111827;
+}

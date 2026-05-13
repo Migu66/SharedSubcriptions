@@ -1,0 +1,84 @@
+@namespace SharedUI.Components
+@using SharedUI.Models
+@using ApexCharts
+
+<div class="savings-chart">
+    <header class="savings-chart__header">
+        <h3 class="savings-chart__title">Ahorro anual del grupo — @Savings.Year</h3>
+        <p class="savings-chart__subtitle">
+            Con el reparto pagaste <strong>@Savings.TotalSpent.ToString("F2") @Savings.Currency</strong>
+            y ahorraste <strong>@Savings.EstimatedSavings.ToString("F2") @Savings.Currency</strong>
+            respecto a pagar solo.
+        </p>
+    </header>
+
+    <ApexChart TItem="SavingsDataPoint"
+               Title=""
+               Options="_options"
+               @ref="_chart">
+
+        <ApexPointSeries TItem="SavingsDataPoint"
+                         Items="_data"
+                         Name="Gasto compartido"
+                         SeriesType="SeriesType.Bar"
+                         XValue="@(p => p.Label)"
+                         YValue="@(p => p.TotalSpent)"
+                         Color="#2563eb" />
+
+        <ApexPointSeries TItem="SavingsDataPoint"
+                         Items="_data"
+                         Name="Ahorro estimado"
+                         SeriesType="SeriesType.Bar"
+                         XValue="@(p => p.Label)"
+                         YValue="@(p => p.EstimatedSavings)"
+                         Color="#16a34a" />
+
+    </ApexChart>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public GroupSavingsModel Savings { get; set; } = default!;
+
+    private ApexChart<SavingsDataPoint>? _chart;
+    private List<SavingsDataPoint> _data = [];
+
+    private ApexChartOptions<SavingsDataPoint> _options = new()
+    {
+        Chart = new Chart
+        {
+            Toolbar = new Toolbar { Show = false },
+            Background = "transparent"
+        },
+        PlotOptions = new PlotOptions
+        {
+            Bar = new PlotOptionsBar
+            {
+                Horizontal = false,
+                BorderRadius = 6,
+                ColumnWidth = "50%"
+            }
+        },
+        Xaxis = new XAxis { Type = XAxisType.Category },
+        Yaxis = [new YAxis { Labels = new YAxisLabels { Formatter = "function(val) { return val.toFixed(2) + ' €'; }" } }],
+        Legend = new Legend { Position = LegendPosition.Top },
+        Tooltip = new Tooltip { Y = new TooltipY { Formatter = "function(val) { return val.toFixed(2) + ' €'; }" } }
+    };
+
+    protected override void OnParametersSet()
+    {
+        _data =
+        [
+            new SavingsDataPoint(
+                Label: Savings.Year.ToString(),
+                TotalSpent: Savings.TotalSpent,
+                EstimatedSavings: Savings.EstimatedSavings)
+        ];
+    }
+
+    /// <summary>Punto de datos interno para la serie del gráfico.</summary>
+    private sealed record SavingsDataPoint(
+        string Label,
+        decimal TotalSpent,
+        decimal EstimatedSavings);
+}
