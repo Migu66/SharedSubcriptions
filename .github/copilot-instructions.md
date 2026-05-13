@@ -556,15 +556,15 @@ Añadir rate limiting global con `AddRateLimiter` usando la política de ventana
 
 Completar `Program.cs` registrando YARP, la autenticación JWT, el rate limiter y los middlewares en el orden correcto. Crear el proyecto `ApiGateway.Tests` con tests de integración usando `WebApplicationFactory` que verifican el enrutamiento correcto hacia cada servicio y que los endpoints protegidos rechazan peticiones sin token.
 
-### Fase 9 — Razor Class Library (UI compartida) ----
+### Fase 9 — Razor Class Library (UI compartida)
 
 Se construyen los componentes Razor que se usarán tanto en la web como en la app móvil: el componente del semáforo de pagos, el panel del grupo, las tarjetas de suscripción y los gráficos de ahorro.
 
-#### Fase 9.1 — Estructura del proyecto SharedUI
+#### Fase 9.1 — Estructura del proyecto SharedUI ----
 
 Crear el proyecto `SharedUI` como una Razor Class Library de .NET 10. Añadirlo a la solución principal. Configurar los paquetes NuGet necesarios. Crear la estructura de carpetas: `Components`, `Layouts` y `Services`. En este paso no se escribe ningún componente, solo la estructura base.
 
-#### Fase 9.2 — Componente: PaymentStatusBadge (semáforo)
+#### Fase 9.2 — Componente: PaymentStatusBadge (semáforo) ----
 
 Crear el componente Razor `PaymentStatusBadge` que recibe un parámetro `PaymentStatus` (enum con valores `Green`, `Yellow` y `Red`) y renderiza el indicador visual correspondiente. Verde para pagado, amarillo para pendiente con menos de un día, rojo para moroso. El componente debe ser prominente y accesible, con soporte para aria-labels.
 

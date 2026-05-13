@@ -1,0 +1,37 @@
+@namespace SharedUI.Components
+
+<span class="payment-badge payment-badge--@StatusClass"
+      role="status"
+      aria-label="@AriaLabel">
+    <span class="payment-badge__dot" aria-hidden="true"></span>
+    <span class="payment-badge__label">@Label</span>
+</span>
+
+@code {
+    [Parameter, EditorRequired]
+    public PaymentStatus Status { get; set; }
+
+    private string StatusClass => Status switch
+    {
+        PaymentStatus.Green  => "green",
+        PaymentStatus.Yellow => "yellow",
+        PaymentStatus.Red    => "red",
+        _                    => "unknown"
+    };
+
+    private string Label => Status switch
+    {
+        PaymentStatus.Green  => "Pagado",
+        PaymentStatus.Yellow => "Pendiente",
+        PaymentStatus.Red    => "Moroso",
+        _                    => "Desconocido"
+    };
+
+    private string AriaLabel => Status switch
+    {
+        PaymentStatus.Green  => "Estado de pago: pagado",
+        PaymentStatus.Yellow => "Estado de pago: pendiente, vence pronto",
+        PaymentStatus.Red    => "Estado de pago: moroso, vencido",
+        _                    => "Estado de pago: desconocido"
+    };
+}
