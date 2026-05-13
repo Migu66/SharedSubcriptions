@@ -556,7 +556,7 @@ Añadir rate limiting global con `AddRateLimiter` usando la política de ventana
 
 Completar `Program.cs` registrando YARP, la autenticación JWT, el rate limiter y los middlewares en el orden correcto. Crear el proyecto `ApiGateway.Tests` con tests de integración usando `WebApplicationFactory` que verifican el enrutamiento correcto hacia cada servicio y que los endpoints protegidos rechazan peticiones sin token.
 
-### Fase 9 — Razor Class Library (UI compartida)
+### Fase 9 — Razor Class Library (UI compartida) ----
 
 Se construyen los componentes Razor que se usarán tanto en la web como en la app móvil: el componente del semáforo de pagos, el panel del grupo, las tarjetas de suscripción y los gráficos de ahorro.
 

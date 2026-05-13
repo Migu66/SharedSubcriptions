@@ -54,4 +54,7 @@
   <Folder Name="/shared/SharedKernel/">
     <Project Path="shared/SharedKernel/SharedSubscriptions.SharedKernel/SharedSubscriptions.SharedKernel.csproj" />
   </Folder>
+  <Folder Name="/shared/RazorComponents/">
+    <Project Path="shared/RazorComponents/SharedUI/SharedUI.csproj" />
+  </Folder>
 </Solution>
