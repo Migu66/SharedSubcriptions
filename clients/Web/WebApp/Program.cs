@@ -22,15 +22,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization();
 
-// HttpClient apuntando al API Gateway
-builder.Services.AddHttpClient("ApiGateway", client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["ApiGateway:BaseUrl"] ?? "http://localhost:5000");
-});
-
 // Servicios de la aplicación
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddTransient<AuthTokenHandler>();
+
+// HttpClient apuntando al API Gateway (con inyección automática del Bearer token)
+builder.Services.AddHttpClient("ApiGateway", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiGateway:BaseUrl"] ?? "http://localhost:5000");
+})
+.AddHttpMessageHandler<AuthTokenHandler>();
 
 var app = builder.Build();
 

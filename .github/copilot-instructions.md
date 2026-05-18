@@ -584,11 +584,11 @@ Crear el componente Razor `SavingsChart` que muestra un gráfico del ahorro anua
 
 Consume la Razor Class Library y el API Gateway. Implementa el dashboard principal, la gestión de grupos y el historial de pagos.
 
-#### Fase 10.1 — Estructura del proyecto WebApp
+#### Fase 10.1 — Estructura del proyecto WebApp ----
 
 Crear el proyecto `WebApp` como una Blazor Web App de .NET 10 con renderizado SSR e InteractiveServer. Añadirlo a la solución principal. Referenciar `SharedUI` y configurar los paquetes NuGet necesarios: cliente HTTP, autenticación con cookies y gestión de estado. Crear la estructura de carpetas: `Pages`, `Components`, `Services` y `Layout`.
 
-#### Fase 10.2 — Autenticación y gestión de tokens
+#### Fase 10.2 — Autenticación y gestión de tokens ----
 
 Crear el servicio `AuthService` que gestiona el ciclo de vida del token JWT: login, logout, refresco automático y almacenamiento en cookies HttpOnly. Configurar el esquema de autenticación con `CookieAuthenticationDefaults` en `Program.cs`. Crear el componente `LoginPage` con el formulario de email y contraseña que llama al endpoint `/api/auth/login` del Gateway.
 
