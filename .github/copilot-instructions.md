@@ -636,23 +636,23 @@ Configurar los permisos necesarios en `AndroidManifest.xml` (INTERNET, RECEIVE_B
 
 Se completa el docker-compose.yml con todos los microservicios, se configuran las variables de entorno por servicio y se preparan los Dockerfiles de cada Api. Esta es la fase final antes de considerar el despliegue en Kubernetes.
 
-#### Fase 12.1 — Dockerfiles de cada microservicio
+#### Fase 12.1 — Dockerfiles de cada microservicio ----
 
 Crear un `Dockerfile` multi-stage para cada uno de los seis microservicios (`Groups.Api`, `Identity.Api`, `Subscriptions.Api`, `Payments.Api`, `Notifications.Api`, `Analytics.Api`) y para el `ApiGateway`. Cada Dockerfile usa la imagen `mcr.microsoft.com/dotnet/sdk:10.0` para build y `mcr.microsoft.com/dotnet/aspnet:10.0` para runtime. El stage de build copia solo el `.csproj` y restaura los paquetes antes de copiar el resto del código para aprovechar la caché de capas de Docker.
 
-#### Fase 12.2 — docker-compose.yml base
+#### Fase 12.2 — docker-compose.yml base ----
 
 Crear el archivo `docker-compose.yml` en la raíz de la solución con los servicios de infraestructura: `rabbitmq` (imagen `rabbitmq:3-management`), `sqlserver` (imagen `mcr.microsoft.com/mssql/server:2022-latest`) y `seq` (imagen `datalust/seq`). Definir los volúmenes persistentes para cada base de datos y configurar las variables de entorno de cada contenedor (contraseñas, puertos). Añadir `healthcheck` a cada servicio de infraestructura.
 
-#### Fase 12.3 — Servicios de aplicación en docker-compose.yml
+#### Fase 12.3 — Servicios de aplicación en docker-compose.yml ----
 
 Añadir al `docker-compose.yml` los contenedores de los seis microservicios y el API Gateway. Cada servicio referencia su `Dockerfile` con la directiva `build`. Configurar las variables de entorno de cada uno: cadena de conexión a su base de datos propia, URL de RabbitMQ, URL de Seq y las claves de JWT. Usar `depends_on` con condición `service_healthy` para garantizar que la infraestructura esté lista antes de arrancar los servicios.
 
-#### Fase 12.4 — docker-compose.override.yml para desarrollo local
+#### Fase 12.4 — docker-compose.override.yml para desarrollo local ----
 
 Crear `docker-compose.override.yml` para sobreescribir la configuración en desarrollo: exponer los puertos de cada microservicio en localhost para facilitar el debugging, montar los volúmenes de código fuente para hot-reload, reducir los tiempos de healthcheck y añadir el servicio `webApp` apuntando al proyecto `WebApp`. Este archivo nunca se usa en producción.
 
-#### Fase 12.5 — Variables de entorno y documentación de arranque
+#### Fase 12.5 — Variables de entorno y documentación de arranque ----
 
 Crear el archivo `.env.example` en la raíz con todas las variables de entorno necesarias para ejecutar el sistema: credenciales de SQL Server, cadena de conexión de RabbitMQ, clave secreta JWT, API keys de Stripe, SendGrid, Telegram y Firebase. Crear el archivo `README.md` con las instrucciones paso a paso para arrancar el entorno completo con `docker compose up --build` y verificar que todos los servicios responden correctamente.
 
