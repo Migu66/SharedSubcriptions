@@ -52,6 +52,9 @@ public static class MauiProgram
         builder.Services.AddTransient<MobileGroupService>();
         builder.Services.AddTransient<MobilePaymentService>();
 
+        // Notificaciones push (Singleton: gestiona eventos y suscripciones)
+        builder.Services.AddSingleton<PushNotificationService>();
+
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();

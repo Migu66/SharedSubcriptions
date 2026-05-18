@@ -620,11 +620,11 @@ Crear el proyecto `MobileApp` como una .NET MAUI Blazor Hybrid App de .NET 10. A
 
 Crear el servicio `MobileAuthService` que gestiona el ciclo de vida del token JWT en el contexto móvil. Almacenar el `AccessToken` y el `RefreshToken` usando `SecureStorage.SetAsync` de MAUI para que nunca queden expuestos en texto plano. Implementar el refresco automático del token antes de cada petición al Gateway. Crear la página `LoginPage` adaptada para móvil con el formulario de credenciales.
 
-#### Fase 11.3 — Reutilización de componentes SharedUI
+#### Fase 11.3 — Reutilización de componentes SharedUI ----
 
 Verificar que todos los componentes de `SharedUI` (`PaymentStatusBadge`, `GroupPanel`, `SubscriptionCard` y `SavingsChart`) se renderizan correctamente dentro del shell de MAUI Blazor Hybrid. Crear las páginas `Dashboard`, `GroupDetail` y `MyDebts` en el proyecto `MobileApp` que referencian los mismos componentes que la web. Adaptar la navegación al modelo Shell de MAUI con flyout menu y tabs.
 
-#### Fase 11.4 — Notificaciones push nativas con Firebase
+#### Fase 11.4 — Notificaciones push nativas con Firebase ----
 
 Configurar Firebase Cloud Messaging en la plataforma iOS (añadir `GoogleService-Info.plist`) y Android (añadir `google-services.json`). Registrar el dispositivo en FCM al hacer login y almacenar el device token en el perfil del usuario llamando al endpoint de Identity Service. Implementar el handler de notificaciones en segundo plano (`FirebaseMessagingService`) que muestra la notificación nativa del sistema operativo al recibir un evento de pago pendiente o deuda saldada.
 

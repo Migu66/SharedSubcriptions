@@ -43,6 +43,15 @@
     <PackageReference Include="Plugin.Firebase.CloudMessaging" Version="3.0.3" />
   </ItemGroup>
 
+  <!-- Archivos de configuración de Firebase por plataforma -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+    <GoogleServicesJson Include="Platforms\Android\google-services.json" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0-ios'">
+    <BundleResource Include="Platforms\iOS\GoogleService-Info.plist" />
+  </ItemGroup>
+
   <!-- Referencia a la Razor Class Library compartida -->
   <ItemGroup>
     <ProjectReference Include="..\..\..\shared\RazorComponents\SharedUI\SharedUI.csproj" />

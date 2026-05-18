@@ -1,0 +1,30 @@
+{
+  "_INSTRUCCIONES": "Este es un archivo PLACEHOLDER. Descarga el archivo real desde Firebase Console -> tu proyecto -> Configuración -> tu app Android -> google-services.json y reemplaza este archivo.",
+  "project_info": {
+    "project_number": "REPLACE_WITH_YOUR_PROJECT_NUMBER",
+    "project_id": "REPLACE_WITH_YOUR_PROJECT_ID",
+    "storage_bucket": "REPLACE_WITH_YOUR_PROJECT_ID.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "REPLACE_WITH_YOUR_ANDROID_APP_ID",
+        "android_client_info": {
+          "package_name": "com.sharedsubscriptions.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "REPLACE_WITH_YOUR_API_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
