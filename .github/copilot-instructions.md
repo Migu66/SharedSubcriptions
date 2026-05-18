@@ -592,7 +592,7 @@ Crear el proyecto `WebApp` como una Blazor Web App de .NET 10 con renderizado SS
 
 Crear el servicio `AuthService` que gestiona el ciclo de vida del token JWT: login, logout, refresco automático y almacenamiento en cookies HttpOnly. Configurar el esquema de autenticación con `CookieAuthenticationDefaults` en `Program.cs`. Crear el componente `LoginPage` con el formulario de email y contraseña que llama al endpoint `/api/auth/login` del Gateway.
 
-#### Fase 10.3 — Dashboard principal
+#### Fase 10.3 — Dashboard principal ----
 
 Crear la página `Dashboard` que muestra todos los grupos del usuario autenticado usando el componente `GroupPanel` de `SharedUI`. Para cada grupo muestra las suscripciones activas con `SubscriptionCard` y el estado del semáforo de cada miembro con `PaymentStatusBadge`. La página se actualiza en tiempo real mediante SignalR cuando cambia el estado de un pago.
 

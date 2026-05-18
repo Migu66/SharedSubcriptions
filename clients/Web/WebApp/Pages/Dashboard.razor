@@ -1,0 +1,137 @@
+@page "/"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject DashboardService DashboardService
+@inject NavigationManager Navigation
+@inject IConfiguration Configuration
+@implements IAsyncDisposable
+
+<PageTitle>Dashboard — SharedSubscriptions</PageTitle>
+
+<div class="dashboard">
+    <header class="dashboard__header">
+        <h1 class="dashboard__title">Mis suscripciones</h1>
+        <a href="/grupos/nuevo" class="btn-primary">+ Nuevo grupo</a>
+    </header>
+
+    @if (isLoading)
+    {
+        <div class="dashboard__loading" role="status" aria-label="Cargando datos">
+            <span class="spinner"></span>
+            <span>Cargando...</span>
+        </div>
+    }
+    else if (groups.Count == 0)
+    {
+        <div class="dashboard__empty">
+            <p>Aún no perteneces a ningún grupo.</p>
+            <a href="/grupos/nuevo" class="btn-primary">Crear mi primer grupo</a>
+        </div>
+    }
+    else
+    {
+        @foreach (var data in groups)
+        {
+            <section class="dashboard__group-section">
+                <!-- Panel del grupo con miembros y semáforo -->
+                <GroupPanel Group="data.Group"
+                            IsAdmin="data.IsAdmin"
+                            OnAddMember="() => Navigation.NavigateTo($"/grupos/{data.Group.Id}/miembros/nuevo")"
+                            OnRemoveMember="(memberId) => HandleRemoveMemberAsync(data.Group.Id, memberId)" />
+
+                <!-- Suscripciones del grupo -->
+                @if (data.Subscriptions.Count > 0)
+                {
+                    <div class="dashboard__subscriptions">
+                        @foreach (var sub in data.Subscriptions)
+                        {
+                            <SubscriptionCard Subscription="sub"
+                                              IsAdmin="data.IsAdmin"
+                                              OnConfirmPayment="(subId) => HandleConfirmPaymentAsync(subId)" />
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="dashboard__no-subs">
+                        No hay suscripciones en este grupo.
+                        @if (data.IsAdmin)
+                        {
+                            <a href="/grupos/@data.Group.Id">Añadir suscripción</a>
+                        }
+                    </p>
+                }
+            </section>
+        }
+    }
+</div>
+
+@code {
+    private List<GroupDashboardData> groups = [];
+    private bool isLoading = true;
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDataAsync();
+        await ConnectToSignalRAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        isLoading = true;
+        try
+        {
+            var data = await DashboardService.GetDashboardDataAsync();
+            groups = data.ToList();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task ConnectToSignalRAsync()
+    {
+        var hubUrl = Configuration["ApiGateway:BaseUrl"] + "/hubs/payments";
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(hubUrl)
+            .WithAutomaticReconnect()
+            .Build();
+
+        // Cuando cambia el estado de un pago, recargamos los datos
+        hubConnection.On("PaymentStatusChanged", async () =>
+        {
+            await LoadDataAsync();
+            await InvokeAsync(StateHasChanged);
+        });
+
+        try
+        {
+            await hubConnection.StartAsync();
+        }
+        catch
+        {
+            // SignalR no disponible en este momento: la página sigue funcionando sin tiempo real
+        }
+    }
+
+    private async Task HandleRemoveMemberAsync(Guid groupId, Guid memberId)
+    {
+        Navigation.NavigateTo($"/grupos/{groupId}");
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleConfirmPaymentAsync(Guid subscriptionId)
+    {
+        Navigation.NavigateTo($"/pagos/confirmar/{subscriptionId}");
+        await Task.CompletedTask;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+            await hubConnection.DisposeAsync();
+    }
+}
