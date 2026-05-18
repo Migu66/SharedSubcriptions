@@ -1,0 +1,93 @@
+# docker-compose.override.yml — Configuración exclusiva para desarrollo local
+# Este archivo NUNCA se usa en producción.
+
+services:
+
+  # ── Infraestructura: puertos expuestos y healthchecks más rápidos ──────────
+
+  rabbitmq:
+    ports:
+      - "5672:5672"
+      - "15672:15672"   # Panel de administración: http://localhost:15672
+    healthcheck:
+      interval: 5s
+      start_period: 15s
+
+  sqlserver:
+    ports:
+      - "1433:1433"
+    healthcheck:
+      interval: 5s
+      start_period: 20s
+
+  seq:
+    ports:
+      - "5341:5341"     # Ingesta de logs
+      - "8081:80"       # UI de Seq: http://localhost:8081
+    healthcheck:
+      interval: 5s
+      start_period: 10s
+
+  # ── Microservicios: puertos expuestos para debugging directo ──────────────
+
+  identity-service:
+    ports:
+      - "5002:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  groups-service:
+    ports:
+      - "5001:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  subscriptions-service:
+    ports:
+      - "5003:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  payments-service:
+    ports:
+      - "5004:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  notifications-service:
+    ports:
+      - "5005:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  analytics-service:
+    ports:
+      - "5006:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  # ── API Gateway ────────────────────────────────────────────────────────────
+
+  api-gateway:
+    ports:
+      - "5000:8080"     # Punto de entrada principal: http://localhost:5000
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  # ── Aplicación web (solo en desarrollo) ───────────────────────────────────
+
+  web-app:
+    build:
+      context: .
+      dockerfile: clients/Web/WebApp/Dockerfile
+    container_name: sharedsubscriptions-webapp
+    ports:
+      - "5010:8080"     # Web App: http://localhost:5010
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ApiGateway__BaseUrl: http://api-gateway:8080
+    depends_on:
+      - api-gateway
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped

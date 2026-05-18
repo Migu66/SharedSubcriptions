@@ -1,0 +1,263 @@
+name: sharedsubscriptions
+
+services:
+
+  # ── Infraestructura ────────────────────────────────────────────────────────
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: sharedsubscriptions-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-admin123}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - sharedsubscriptions
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sharedsubscriptions-sqlserver
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD:-YourStrong!Passw0rd}
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$SA_PASSWORD" -Q "SELECT 1" -C > /dev/null 2>&1'
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    networks:
+      - sharedsubscriptions
+
+  seq:
+    image: datalust/seq:latest
+    container_name: sharedsubscriptions-seq
+    environment:
+      ACCEPT_EULA: "Y"
+    volumes:
+      - seq-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5341/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - sharedsubscriptions
+
+  # ── Microservicios ─────────────────────────────────────────────────────────
+
+  identity-service:
+    build:
+      context: .
+      dockerfile: services/Identity/Identity.Api/Dockerfile
+    container_name: sharedsubscriptions-identity
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__IdentityDb: "Server=sqlserver;Database=SharedSubscriptions_Identity;User Id=sa;Password=${SA_PASSWORD:-YourStrong!Passw0rd};TrustServerCertificate=True"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__VirtualHost: "/"
+      RabbitMq__Username: ${RABBITMQ_USER:-admin}
+      RabbitMq__Password: ${RABBITMQ_PASS:-admin123}
+      JwtSettings__SecretKey: ${JWT_SECRET}
+      JwtSettings__Issuer: SharedSubscriptions
+      JwtSettings__Audience: SharedSubscriptions.Api
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__serverUrl: http://seq:5341
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped
+
+  groups-service:
+    build:
+      context: .
+      dockerfile: services/Groups/Groups.Api/Dockerfile
+    container_name: sharedsubscriptions-groups
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__GroupsDb: "Server=sqlserver;Database=SharedSubscriptions_Groups;User Id=sa;Password=${SA_PASSWORD:-YourStrong!Passw0rd};TrustServerCertificate=True"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__VirtualHost: "/"
+      RabbitMq__Username: ${RABBITMQ_USER:-admin}
+      RabbitMq__Password: ${RABBITMQ_PASS:-admin123}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: SharedSubscriptions
+      Jwt__Audience: SharedSubscriptions.Api
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__serverUrl: http://seq:5341
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped
+
+  subscriptions-service:
+    build:
+      context: .
+      dockerfile: services/Subscriptions/Subscriptions.Api/Dockerfile
+    container_name: sharedsubscriptions-subscriptions
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__SubscriptionsDb: "Server=sqlserver;Database=SharedSubscriptions_Subscriptions;User Id=sa;Password=${SA_PASSWORD:-YourStrong!Passw0rd};TrustServerCertificate=True"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__VirtualHost: "/"
+      RabbitMq__Username: ${RABBITMQ_USER:-admin}
+      RabbitMq__Password: ${RABBITMQ_PASS:-admin123}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: SharedSubscriptions
+      Jwt__Audience: SharedSubscriptions.Api
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__serverUrl: http://seq:5341
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped
+
+  payments-service:
+    build:
+      context: .
+      dockerfile: services/Payments/Payments.Api/Dockerfile
+    container_name: sharedsubscriptions-payments
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__PaymentsDb: "Server=sqlserver;Database=SharedSubscriptions_Payments;User Id=sa;Password=${SA_PASSWORD:-YourStrong!Passw0rd};TrustServerCertificate=True"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__VirtualHost: "/"
+      RabbitMq__Username: ${RABBITMQ_USER:-admin}
+      RabbitMq__Password: ${RABBITMQ_PASS:-admin123}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: SharedSubscriptions
+      Jwt__Audience: SharedSubscriptions.Api
+      Stripe__SecretKey: ${STRIPE_SECRET_KEY}
+      Stripe__WebhookSecret: ${STRIPE_WEBHOOK_SECRET}
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__serverUrl: http://seq:5341
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped
+
+  notifications-service:
+    build:
+      context: .
+      dockerfile: services/Notifications/Notifications.Api/Dockerfile
+    container_name: sharedsubscriptions-notifications
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__NotificationsDb: "Server=sqlserver;Database=SharedSubscriptions_Notifications;User Id=sa;Password=${SA_PASSWORD:-YourStrong!Passw0rd};TrustServerCertificate=True"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__VirtualHost: "/"
+      RabbitMq__Username: ${RABBITMQ_USER:-admin}
+      RabbitMq__Password: ${RABBITMQ_PASS:-admin123}
+      Notifications__SendGrid__ApiKey: ${SENDGRID_API_KEY}
+      Notifications__SendGrid__FromEmail: ${SENDGRID_FROM_EMAIL:-noreply@sharedsubscriptions.com}
+      Notifications__Telegram__BotToken: ${TELEGRAM_BOT_TOKEN}
+      Notifications__WhatsApp__AccessToken: ${WHATSAPP_ACCESS_TOKEN}
+      Notifications__WhatsApp__PhoneNumberId: ${WHATSAPP_PHONE_NUMBER_ID}
+      Notifications__Firebase__CredentialPath: /secrets/firebase-credentials.json
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__serverUrl: http://seq:5341
+    volumes:
+      - ${FIREBASE_CREDENTIALS_PATH:-/dev/null}:/secrets/firebase-credentials.json:ro
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped
+
+  analytics-service:
+    build:
+      context: .
+      dockerfile: services/Analytics/Analytics.Api/Dockerfile
+    container_name: sharedsubscriptions-analytics
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__AnalyticsDb: "Server=sqlserver;Database=SharedSubscriptions_Analytics;User Id=sa;Password=${SA_PASSWORD:-YourStrong!Passw0rd};TrustServerCertificate=True"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__VirtualHost: "/"
+      RabbitMq__Username: ${RABBITMQ_USER:-admin}
+      RabbitMq__Password: ${RABBITMQ_PASS:-admin123}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__Issuer: SharedSubscriptions
+      Jwt__Audience: SharedSubscriptions.Api
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__serverUrl: http://seq:5341
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped
+
+  # ── API Gateway ────────────────────────────────────────────────────────────
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: gateways/ApiGateway/Dockerfile
+    container_name: sharedsubscriptions-gateway
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      JwtSettings__SecretKey: ${JWT_SECRET}
+      JwtSettings__Issuer: SharedSubscriptions
+      JwtSettings__Audience: SharedSubscriptions.Api
+      ReverseProxy__Clusters__identity-cluster__Destinations__destination1__Address: http://identity-service:8080
+      ReverseProxy__Clusters__groups-cluster__Destinations__destination1__Address: http://groups-service:8080
+      ReverseProxy__Clusters__subscriptions-cluster__Destinations__destination1__Address: http://subscriptions-service:8080
+      ReverseProxy__Clusters__payments-cluster__Destinations__destination1__Address: http://payments-service:8080
+      ReverseProxy__Clusters__analytics-cluster__Destinations__destination1__Address: http://analytics-service:8080
+      Serilog__WriteTo__1__Name: Seq
+      Serilog__WriteTo__1__Args__serverUrl: http://seq:5341
+    depends_on:
+      - identity-service
+      - groups-service
+      - subscriptions-service
+      - payments-service
+      - analytics-service
+    networks:
+      - sharedsubscriptions
+    restart: unless-stopped
+
+# ── Volúmenes ──────────────────────────────────────────────────────────────────
+
+volumes:
+  rabbitmq-data:
+  sqlserver-data:
+  seq-data:
+
+# ── Redes ──────────────────────────────────────────────────────────────────────
+
+networks:
+  sharedsubscriptions:
+    driver: bridge
