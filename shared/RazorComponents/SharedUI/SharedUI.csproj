@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor.ApexCharts" Version="3.0.0-beta.9" />
+    <PackageReference Include="Blazor-ApexCharts" Version="6.1.0" />
   </ItemGroup>
 
 </Project>
