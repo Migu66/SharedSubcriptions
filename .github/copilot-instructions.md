@@ -616,7 +616,7 @@ Referencia la misma Razor Class Library que la web. Añade las notificaciones pu
 
 Crear el proyecto `MobileApp` como una .NET MAUI Blazor Hybrid App de .NET 10. Añadirlo a la solución principal. Referenciar `SharedUI`. Configurar los paquetes NuGet necesarios: `Microsoft.Maui.Controls`, cliente HTTP con `HttpClient`, `Plugin.Firebase.CloudMessaging` y las herramientas de build para iOS y Android. Crear la estructura de carpetas: `Pages`, `Services` y `Platforms`.
 
-#### Fase 11.2 — Autenticación con MAUI Secure Storage
+#### Fase 11.2 — Autenticación con MAUI Secure Storage ----
 
 Crear el servicio `MobileAuthService` que gestiona el ciclo de vida del token JWT en el contexto móvil. Almacenar el `AccessToken` y el `RefreshToken` usando `SecureStorage.SetAsync` de MAUI para que nunca queden expuestos en texto plano. Implementar el refresco automático del token antes de cada petición al Gateway. Crear la página `LoginPage` adaptada para móvil con el formulario de credenciales.
 
