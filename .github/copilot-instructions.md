@@ -612,7 +612,7 @@ Crear la página `Analytics` que muestra el componente `SavingsChart` de `Shared
 
 Referencia la misma Razor Class Library que la web. Añade las notificaciones push nativas mediante Firebase y el almacenamiento seguro de tokens con MAUI Secure Storage.
 
-#### Fase 11.1 — Estructura del proyecto MobileApp
+#### Fase 11.1 — Estructura del proyecto MobileApp ----
 
 Crear el proyecto `MobileApp` como una .NET MAUI Blazor Hybrid App de .NET 10. Añadirlo a la solución principal. Referenciar `SharedUI`. Configurar los paquetes NuGet necesarios: `Microsoft.Maui.Controls`, cliente HTTP con `HttpClient`, `Plugin.Firebase.CloudMessaging` y las herramientas de build para iOS y Android. Crear la estructura de carpetas: `Pages`, `Services` y `Platforms`.
 
