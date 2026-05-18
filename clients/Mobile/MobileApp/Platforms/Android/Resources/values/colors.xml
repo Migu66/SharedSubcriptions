@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Color primario de la app, usado como color de icono en notificaciones FCM -->
+    <color name="colorPrimary">#e94560</color>
+</resources>

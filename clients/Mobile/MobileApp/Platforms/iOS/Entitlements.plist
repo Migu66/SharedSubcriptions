@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+      Entorno de Apple Push Notification Service (APNs).
+      - 'development': para builds debug en dispositivo físico (usando certificado de desarrollo).
+      - 'production': para builds de App Store / TestFlight.
+      El valor correcto se aplica automáticamente si se usan perfiles de aprovisionamiento
+      separados para debug y release.
+    -->
+    <key>aps-environment</key>
+    <string>development</string>
+</dict>
+</plist>

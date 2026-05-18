@@ -33,18 +33,27 @@ public static class MauiProgram
         // Handler que adjunta Bearer token a cada petición protegida
         builder.Services.AddTransient<MobileAuthTokenHandler>();
 
+        // URL base del API Gateway según la plataforma de desarrollo:
+        //   Android emulador  → 10.0.2.2 (alias especial de Android que apunta al localhost del PC)
+        //   iOS simulador     → localhost (el simulador comparte la red del Mac)
+        //   Windows           → localhost (para pruebas desde el mismo equipo)
+#if ANDROID
+        const string apiBaseUrl = "http://10.0.2.2:5000";
+#else
+        const string apiBaseUrl = "http://localhost:5000";
+#endif
+
         // Cliente HTTP protegido — para llamadas de negocio (con token)
-        // En Android, 10.0.2.2 equivale a localhost del PC de desarrollo
         builder.Services.AddHttpClient("ApiGateway", client =>
         {
-            client.BaseAddress = new Uri("http://10.0.2.2:5000");
+            client.BaseAddress = new Uri(apiBaseUrl);
         })
         .AddHttpMessageHandler<MobileAuthTokenHandler>();
 
         // Cliente HTTP sin autenticación — solo para login y refresh (evita recursión)
         builder.Services.AddHttpClient("ApiGatewayAuth", client =>
         {
-            client.BaseAddress = new Uri("http://10.0.2.2:5000");
+            client.BaseAddress = new Uri(apiBaseUrl);
         });
 
         // Servicios de negocio

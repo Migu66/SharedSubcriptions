@@ -33,5 +33,22 @@
     <array>
         <string>remote-notification</string>
     </array>
+
+    <!--
+      App Transport Security: permite tráfico HTTP solo a localhost durante el desarrollo.
+      En producción todos los endpoints son HTTPS y esta excepción no aplica.
+    -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <!-- localhost:5000 = API Gateway en el simulador de iOS -->
+            <key>localhost</key>
+            <dict>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
 </dict>
 </plist>

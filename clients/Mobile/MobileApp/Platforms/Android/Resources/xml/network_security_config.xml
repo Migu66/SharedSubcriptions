@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Política de seguridad de red para desarrollo.
+  En producción todo el tráfico va a HTTPS; este fichero solo permite HTTP
+  hacia el entorno local del desarrollador.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- 10.0.2.2 es la IP especial del emulador Android que apunta a localhost del PC -->
+        <domain includeSubdomains="false">10.0.2.2</domain>
+    </domain-config>
+</network-security-config>

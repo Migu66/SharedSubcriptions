@@ -628,7 +628,7 @@ Verificar que todos los componentes de `SharedUI` (`PaymentStatusBadge`, `GroupP
 
 Configurar Firebase Cloud Messaging en la plataforma iOS (añadir `GoogleService-Info.plist`) y Android (añadir `google-services.json`). Registrar el dispositivo en FCM al hacer login y almacenar el device token en el perfil del usuario llamando al endpoint de Identity Service. Implementar el handler de notificaciones en segundo plano (`FirebaseMessagingService`) que muestra la notificación nativa del sistema operativo al recibir un evento de pago pendiente o deuda saldada.
 
-#### Fase 11.5 — Configuración de plataformas y publicación
+#### Fase 11.5 — Configuración de plataformas y publicación ----
 
 Configurar los permisos necesarios en `AndroidManifest.xml` (INTERNET, RECEIVE_BOOT_COMPLETED, VIBRATE) y en `Info.plist` de iOS (push notifications, background modes). Configurar los esquemas de build en el `.csproj` para generar el APK de Android y el IPA de iOS. Verificar que la app arranca correctamente en el emulador de Android y en el simulador de iOS y que el flujo completo de login, dashboard y pago funciona end-to-end.
 

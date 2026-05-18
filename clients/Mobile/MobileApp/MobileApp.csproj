@@ -57,4 +57,31 @@
     <ProjectReference Include="..\..\..\shared\RazorComponents\SharedUI\SharedUI.csproj" />
   </ItemGroup>
 
+  <!-- ── Configuración de build de RELEASE para Android (Google Play Store) ─────── -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <!-- AAB para Google Play Store; cambiar a 'apk' para distribución directa (sideload) -->
+    <AndroidPackageFormat>aab</AndroidPackageFormat>
+    <!-- Firma del bundle. Las contraseñas se leen de variables de entorno en CI/CD.
+         Para build local: exportar ANDROID_SIGNING_KEY_PASS y ANDROID_SIGNING_STORE_PASS. -->
+    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidSigningKeyStore>Platforms\Android\sharedsubscriptions.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyAlias>sharedsubscriptions</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>$(ANDROID_SIGNING_KEY_PASS)</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>$(ANDROID_SIGNING_STORE_PASS)</AndroidSigningStorePass>
+  </PropertyGroup>
+
+  <!-- ── Configuración de build de RELEASE para iOS (App Store / TestFlight) ────── -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+    <!-- Genera el archivo .xcarchive listo para subir a App Store Connect -->
+    <ArchiveOnBuild>true</ArchiveOnBuild>
+    <CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+    <!-- CodesignKey y CodesignProvision se configuran en CI/CD (Xcode Cloud, GitHub Actions)
+         o manualmente en Visual Studio for Mac / JetBrains Rider. -->
+  </PropertyGroup>
+
+  <!-- ── Entitlements en DEBUG iOS (necesario para push en dispositivo físico) ───── -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' And $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+    <CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+  </PropertyGroup>
+
 </Project>
