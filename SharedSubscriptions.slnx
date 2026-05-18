@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/clients/" />
+  <Folder Name="/clients/Web/">
+    <Project Path="clients/Web/WebApp/WebApp.csproj" />
+  </Folder>
   <Folder Name="/gateways/">
     <Project Path="gateways/ApiGateway.Tests/ApiGateway.Tests.csproj" />
     <Project Path="gateways/ApiGateway/ApiGateway.csproj" />

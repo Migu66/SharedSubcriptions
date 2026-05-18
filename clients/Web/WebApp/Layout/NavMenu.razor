@@ -1,0 +1,23 @@
+<nav class="nav-menu">
+    <div class="nav-header">
+        <span class="nav-title">SharedSubscriptions</span>
+    </div>
+    <ul>
+        <li><NavLink href="/" Match="NavLinkMatch.All">Inicio</NavLink></li>
+        <li><NavLink href="/mis-deudas">Mis deudas</NavLink></li>
+        <li><NavLink href="/analytics">Ahorro</NavLink></li>
+    </ul>
+    <div class="nav-footer">
+        <AuthorizeView>
+            <Authorized>
+                <form method="post" action="/logout">
+                    <AntiforgeryToken />
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            </Authorized>
+            <NotAuthorized>
+                <NavLink href="/login">Iniciar sesión</NavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
+</nav>
