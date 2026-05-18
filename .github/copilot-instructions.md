@@ -604,7 +604,7 @@ Crear la página `GroupDetail` que muestra el detalle completo de un grupo. Incl
 
 Crear la página `PaymentHistory` que muestra el historial de pagos de una suscripción usando `GET /api/payments/history/{subscriptionId}`. Crear la página `MyDebts` que muestra las deudas pendientes del usuario con `GET /api/payments/debts/pending/{userId}`, incluyendo el botón de pago online que inicia el flujo de Stripe y el botón de marcar como pagado manualmente.
 
-#### Fase 10.6 — Gráficos de ahorro
+#### Fase 10.6 — Gráficos de ahorro ----
 
 Crear la página `Analytics` que muestra el componente `SavingsChart` de `SharedUI` con los datos del servicio Analytics. Incluye el selector de año y el desglose por servicio usando `ServiceSpendingDto`. La página solo es accesible para el administrador del grupo.
 

@@ -1,0 +1,176 @@
+@page "/analytics"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject AnalyticsService AnalyticsService
+
+<PageTitle>Ahorro — SharedSubscriptions</PageTitle>
+
+<div class="analytics-page">
+
+    <header class="analytics-page__header">
+        <h1 class="analytics-page__title">Analíticas de ahorro</h1>
+        <p class="analytics-page__subtitle">Consulta cuánto habéis gastado y cuánto habéis ahorrado al compartir.</p>
+    </header>
+
+    @if (isLoadingGroups)
+    {
+        <div class="analytics-page__loading" role="status">
+            <span class="spinner"></span>
+            <span>Cargando grupos...</span>
+        </div>
+    }
+    else if (adminGroups.Count == 0)
+    {
+        <div class="analytics-page__empty">
+            <p>Solo los administradores de un grupo pueden ver sus analíticas.</p>
+            <p>Crea un grupo o pide a tu administrador que te comparta las estadísticas.</p>
+        </div>
+    }
+    else
+    {
+        <!-- Selectores de grupo y año -->
+        <div class="analytics-page__filters">
+            <div class="filter-group">
+                <label for="groupSelect">Grupo</label>
+                <select id="groupSelect" class="form-select"
+                        @bind="selectedGroupId" @bind:after="OnFiltersChangedAsync">
+                    @foreach (var g in adminGroups)
+                    {
+                        <option value="@g.Id">@g.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="yearSelect">Año</label>
+                <select id="yearSelect" class="form-select"
+                        @bind="selectedYear" @bind:after="OnFiltersChangedAsync">
+                    @for (int y = currentYear; y >= currentYear - 4; y--)
+                    {
+                        var yr = y;
+                        <option value="@yr">@yr</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        @if (isLoadingData)
+        {
+            <div class="analytics-page__loading" role="status">
+                <span class="spinner"></span>
+                <span>Cargando datos...</span>
+            </div>
+        }
+        else if (savings is null)
+        {
+            <div class="analytics-page__no-data">
+                No hay datos de ahorro para este grupo y año.
+                Los datos se generan automáticamente cuando se confirman pagos.
+            </div>
+        }
+        else
+        {
+            <!-- Tarjetas de resumen -->
+            <div class="analytics-page__kpis">
+                <div class="kpi-card">
+                    <span class="kpi-card__label">Gasto total compartido</span>
+                    <span class="kpi-card__value kpi-card__value--spent">
+                        @savings.TotalSpent.ToString("F2") @savings.Currency
+                    </span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-card__label">Ahorro estimado</span>
+                    <span class="kpi-card__value kpi-card__value--savings">
+                        @savings.EstimatedSavings.ToString("F2") @savings.Currency
+                    </span>
+                    <span class="kpi-card__hint">respecto a pagar cada uno su suscripción completa</span>
+                </div>
+            </div>
+
+            <!-- Gráfico de ahorro de SharedUI -->
+            <div class="analytics-page__chart">
+                <SavingsChart Savings="savings" />
+            </div>
+
+            <!-- Desglose por servicio -->
+            @if (spending.Count > 0)
+            {
+                <section class="analytics-page__spending">
+                    <h2 class="analytics-page__section-title">Desglose por servicio</h2>
+                    <div class="spending-list">
+                        @foreach (var item in spending.OrderByDescending(s => s.TotalSpent))
+                        {
+                            var pct = savings.TotalSpent > 0
+                                ? (double)(item.TotalSpent / savings.TotalSpent) * 100
+                                : 0;
+
+                            <div class="spending-item">
+                                <div class="spending-item__info">
+                                    <span class="spending-item__name">@item.ServiceName</span>
+                                    <span class="spending-item__meta">@item.PaymentCount pago(s)</span>
+                                </div>
+                                <div class="spending-item__bar-wrap">
+                                    <div class="spending-item__bar"
+                                         style="width: @pct.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)%">
+                                    </div>
+                                </div>
+                                <span class="spending-item__amount">
+                                    @item.TotalSpent.ToString("F2") @item.Currency
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+        }
+    }
+</div>
+
+@code {
+    private IReadOnlyList<AdminGroupItem> adminGroups = [];
+    private GroupSavingsModel? savings;
+    private IReadOnlyList<ServiceSpendingItem> spending = [];
+
+    private bool isLoadingGroups = true;
+    private bool isLoadingData;
+
+    private Guid selectedGroupId;
+    private int selectedYear;
+    private readonly int currentYear = DateTime.UtcNow.Year;
+
+    protected override async Task OnInitializedAsync()
+    {
+        selectedYear = currentYear;
+
+        adminGroups = await AnalyticsService.GetAdminGroupsAsync();
+        isLoadingGroups = false;
+
+        if (adminGroups.Count > 0)
+        {
+            selectedGroupId = adminGroups[0].Id;
+            await LoadDataAsync();
+        }
+    }
+
+    private async Task OnFiltersChangedAsync()
+    {
+        await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        if (selectedGroupId == Guid.Empty) return;
+
+        isLoadingData = true;
+
+        var savingsTask = AnalyticsService.GetGroupSavingsAsync(selectedGroupId, selectedYear);
+        var spendingTask = AnalyticsService.GetServiceSpendingAsync(selectedGroupId);
+
+        await Task.WhenAll(savingsTask, spendingTask);
+
+        savings = savingsTask.Result;
+        spending = spendingTask.Result;
+
+        isLoadingData = false;
+    }
+}
