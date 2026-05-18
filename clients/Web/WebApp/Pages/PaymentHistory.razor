@@ -1,0 +1,82 @@
+@page "/pagos/historial/{SubscriptionId:guid}"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject PaymentService PaymentService
+
+<PageTitle>Historial de pagos — SharedSubscriptions</PageTitle>
+
+<div class="payment-history">
+    <header class="payment-history__header">
+        <a href="javascript:history.back()" class="back-link">← Volver</a>
+        <h1 class="payment-history__title">Historial de pagos</h1>
+    </header>
+
+    @if (isLoading)
+    {
+        <div class="payment-history__loading" role="status">
+            <span class="spinner"></span>
+            <span>Cargando historial...</span>
+        </div>
+    }
+    else if (records.Count == 0)
+    {
+        <div class="payment-history__empty">
+            <p>Aún no hay pagos registrados para esta suscripción.</p>
+        </div>
+    }
+    else
+    {
+        <div class="payment-history__list">
+            @foreach (var record in records)
+            {
+                <article class="payment-record">
+                    <header class="payment-record__header">
+                        <div>
+                            <span class="payment-record__service">@record.ServiceName</span>
+                            <span class="payment-record__date">@record.PaidAt.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <span class="payment-record__total">
+                            @record.TotalAmount.ToString("F2") @record.Currency
+                        </span>
+                    </header>
+
+                    <div class="payment-record__quotas">
+                        <h4 class="payment-record__quotas-title">Cuotas por miembro</h4>
+                        <ul class="payment-record__quota-list">
+                            @foreach (var quota in record.MemberQuotas)
+                            {
+                                <li class="payment-record__quota-item">
+                                    <span class="quota-email">@quota.MemberEmail</span>
+                                    <div class="quota-right">
+                                        @if (quota.IsProrrated)
+                                        {
+                                            <span class="quota-tag quota-tag--prorated" title="Cuota prorrateada">
+                                                Prorrateado
+                                            </span>
+                                        }
+                                        <span class="quota-amount">
+                                            @quota.Amount.ToString("F2") @quota.Currency
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public Guid SubscriptionId { get; set; }
+
+    private IReadOnlyList<PaymentRecordDto> records = [];
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        records = await PaymentService.GetPaymentHistoryAsync(SubscriptionId);
+        isLoading = false;
+    }
+}

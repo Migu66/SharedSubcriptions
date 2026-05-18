@@ -1,0 +1,90 @@
+@page "/pagos/confirmar/{SubscriptionId:guid}"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject PaymentService PaymentService
+@inject NavigationManager Navigation
+
+<PageTitle>Confirmar pago — SharedSubscriptions</PageTitle>
+
+<div class="confirm-payment">
+    <div class="confirm-payment__card">
+        <h1 class="confirm-payment__title">Confirmar pago al proveedor</h1>
+        <p class="confirm-payment__subtitle">
+            Registra el pago que has realizado al proveedor de la suscripción.
+            Esto generará las deudas proporcionales para cada miembro del grupo.
+        </p>
+
+        <EditForm Model="model" OnValidSubmit="HandleSubmitAsync" FormName="confirm-payment">
+            <DataAnnotationsValidator />
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="totalAmount">Importe total pagado</label>
+                    <InputNumber id="totalAmount"
+                                 @bind-Value="model.TotalAmount"
+                                 class="form-input"
+                                 step="0.01" />
+                    <ValidationMessage For="() => model.TotalAmount" />
+                </div>
+
+                <div class="form-group">
+                    <label for="currency">Moneda</label>
+                    <InputSelect id="currency" @bind-Value="model.Currency" class="form-input">
+                        <option value="EUR">EUR — Euro</option>
+                        <option value="USD">USD — Dólar</option>
+                        <option value="GBP">GBP — Libra</option>
+                    </InputSelect>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="error-alert" role="alert">@errorMessage</div>
+            }
+
+            <div class="confirm-payment__actions">
+                <a href="/" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-primary" disabled="@isLoading">
+                    @(isLoading ? "Confirmando..." : "Confirmar pago")
+                </button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Guid SubscriptionId { get; set; }
+
+    private readonly ConfirmPaymentModel model = new();
+    private string? errorMessage;
+    private bool isLoading;
+
+    private async Task HandleSubmitAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        var ok = await PaymentService.ConfirmAdminPaymentAsync(
+            SubscriptionId, model.TotalAmount, model.Currency);
+
+        if (ok)
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "No se pudo registrar el pago. Comprueba los datos e inténtalo de nuevo.";
+            isLoading = false;
+        }
+    }
+
+    private sealed class ConfirmPaymentModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El importe es obligatorio.")]
+        [System.ComponentModel.DataAnnotations.Range(0.01, double.MaxValue, ErrorMessage = "El importe debe ser mayor que cero.")]
+        public decimal TotalAmount { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Currency { get; set; } = "EUR";
+    }
+}

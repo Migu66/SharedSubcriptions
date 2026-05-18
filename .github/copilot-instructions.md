@@ -600,7 +600,7 @@ Crear la página `Dashboard` que muestra todos los grupos del usuario autenticad
 
 Crear la página `GroupDetail` que muestra el detalle completo de un grupo. Incluye el formulario para añadir miembros por email, el botón para eliminar miembros (visible solo para el administrador) y la lista de suscripciones del grupo. Crear la página `CreateGroup` con el formulario de creación que llama a `POST /api/groups`.
 
-#### Fase 10.5 — Historial de pagos y deudas
+#### Fase 10.5 — Historial de pagos y deudas ----
 
 Crear la página `PaymentHistory` que muestra el historial de pagos de una suscripción usando `GET /api/payments/history/{subscriptionId}`. Crear la página `MyDebts` que muestra las deudas pendientes del usuario con `GET /api/payments/debts/pending/{userId}`, incluyendo el botón de pago online que inicia el flujo de Stripe y el botón de marcar como pagado manualmente.
 

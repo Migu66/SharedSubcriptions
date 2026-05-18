@@ -1,0 +1,147 @@
+@page "/mis-deudas"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject PaymentService PaymentService
+@inject NavigationManager Navigation
+
+<PageTitle>Mis deudas — SharedSubscriptions</PageTitle>
+
+<div class="my-debts">
+    <header class="my-debts__header">
+        <h1 class="my-debts__title">Mis deudas pendientes</h1>
+    </header>
+
+    @if (isLoading)
+    {
+        <div class="my-debts__loading" role="status">
+            <span class="spinner"></span>
+            <span>Cargando deudas...</span>
+        </div>
+    }
+    else if (debts.Count == 0)
+    {
+        <div class="my-debts__empty">
+            <div class="my-debts__empty-icon" aria-hidden="true">✓</div>
+            <p>¡Todo pagado! No tienes deudas pendientes.</p>
+        </div>
+    }
+    else
+    {
+        @if (!string.IsNullOrEmpty(actionError))
+        {
+            <div class="error-alert" role="alert">@actionError</div>
+        }
+        @if (!string.IsNullOrEmpty(actionSuccess))
+        {
+            <div class="success-alert" role="status">@actionSuccess</div>
+        }
+
+        <div class="my-debts__list">
+            @foreach (var debt in debts)
+            {
+                <article class="debt-card @(debt.Status == "Red" ? "debt-card--overdue" : "")">
+                    <div class="debt-card__info">
+                        <div class="debt-card__main">
+                            <span class="debt-card__service">@debt.ServiceName</span>
+                            <span class="debt-card__amount">
+                                @debt.Amount.ToString("F2") @debt.Currency
+                            </span>
+                        </div>
+                        <div class="debt-card__meta">
+                            <span>Acreedor: <strong>@debt.CreditorEmail</strong></span>
+                            <span class="debt-card__date">Creada el @debt.CreatedAt.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        @if (debt.Status == "Red")
+                        {
+                            <span class="debt-card__overdue-badge" role="status">Vencida</span>
+                        }
+                    </div>
+
+                    <div class="debt-card__actions">
+                        <!-- Pago online mediante Stripe -->
+                        <button class="btn-primary"
+                                disabled="@(processingDebtId == debt.Id)"
+                                @onclick="() => HandleStripePaymentAsync(debt.Id)">
+                            @(processingDebtId == debt.Id ? "Procesando..." : "Pagar online")
+                        </button>
+
+                        <!-- Marcar como pagado manualmente -->
+                        <button class="btn-secondary"
+                                disabled="@(processingDebtId == debt.Id)"
+                                @onclick="() => HandleManualSettleAsync(debt.Id)">
+                            Marcar como pagado
+                        </button>
+                    </div>
+                </article>
+            }
+        </div>
+
+        <div class="my-debts__summary">
+            <span>Total pendiente:</span>
+            <strong class="my-debts__total">
+                @debts.Sum(d => d.Amount).ToString("F2") @(debts.FirstOrDefault()?.Currency ?? "EUR")
+            </strong>
+        </div>
+    }
+</div>
+
+@code {
+    private IReadOnlyList<DebtDto> debts = [];
+    private bool isLoading = true;
+    private Guid? processingDebtId;
+    private string? actionError;
+    private string? actionSuccess;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDebtsAsync();
+    }
+
+    private async Task LoadDebtsAsync()
+    {
+        isLoading = true;
+        debts = await PaymentService.GetPendingDebtsAsync();
+        isLoading = false;
+    }
+
+    private async Task HandleStripePaymentAsync(Guid debtId)
+    {
+        processingDebtId = debtId;
+        actionError = null;
+        actionSuccess = null;
+
+        var checkoutUrl = await PaymentService.CreateStripeCheckoutAsync(debtId);
+
+        if (!string.IsNullOrEmpty(checkoutUrl))
+        {
+            // Redirige a la página de pago de Stripe (abre en la misma pestaña)
+            Navigation.NavigateTo(checkoutUrl, forceLoad: true);
+        }
+        else
+        {
+            actionError = "No se pudo iniciar el pago online. Inténtalo de nuevo o usa la opción manual.";
+            processingDebtId = null;
+        }
+    }
+
+    private async Task HandleManualSettleAsync(Guid debtId)
+    {
+        processingDebtId = debtId;
+        actionError = null;
+        actionSuccess = null;
+
+        var ok = await PaymentService.SettleDebtManuallyAsync(debtId);
+
+        if (ok)
+        {
+            actionSuccess = "Pago marcado como realizado correctamente.";
+            await LoadDebtsAsync();
+        }
+        else
+        {
+            actionError = "No se pudo registrar el pago. Inténtalo de nuevo.";
+        }
+
+        processingDebtId = null;
+    }
+}

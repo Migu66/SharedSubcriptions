@@ -27,6 +27,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<GroupService>();
+builder.Services.AddScoped<PaymentService>();
 builder.Services.AddTransient<AuthTokenHandler>();
 
 // HttpClient apuntando al API Gateway (con inyección automática del Bearer token)
