@@ -1,4 +1,6 @@
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace MobileApp.Services;
 
@@ -13,6 +15,7 @@ public sealed class MobileAuthService
     private const string KeyRefreshToken = "refresh_token";
     private const string KeyTokenExpires = "token_expires";
     private const string KeyUserEmail = "user_email";
+    private const string KeyUserId = "user_id";
 
     private readonly IHttpClientFactory _httpClientFactory;
 
@@ -34,6 +37,12 @@ public sealed class MobileAuthService
 
     public async Task<string?> GetUserEmailAsync()
         => await SecureStorage.GetAsync(KeyUserEmail);
+
+    public async Task<Guid> GetUserIdAsync()
+    {
+        var idStr = await SecureStorage.GetAsync(KeyUserId);
+        return Guid.TryParse(idStr, out var id) ? id : Guid.Empty;
+    }
 
     // ── Login / Logout ───────────────────────────────────────────────────────
 
@@ -59,6 +68,7 @@ public sealed class MobileAuthService
         SecureStorage.Remove(KeyRefreshToken);
         SecureStorage.Remove(KeyTokenExpires);
         SecureStorage.Remove(KeyUserEmail);
+        SecureStorage.Remove(KeyUserId);
         AuthStateChanged?.Invoke();
     }
 
@@ -118,6 +128,31 @@ public sealed class MobileAuthService
         await SecureStorage.SetAsync(KeyRefreshToken, token.RefreshToken);
         await SecureStorage.SetAsync(KeyTokenExpires, token.ExpiresAt.ToString("O"));
         await SecureStorage.SetAsync(KeyUserEmail, email);
+
+        var userId = ExtractUserIdFromJwt(token.AccessToken);
+        if (userId != Guid.Empty)
+            await SecureStorage.SetAsync(KeyUserId, userId.ToString());
+    }
+
+    private static Guid ExtractUserIdFromJwt(string accessToken)
+    {
+        try
+        {
+            var parts = accessToken.Split('.');
+            if (parts.Length < 2) return Guid.Empty;
+
+            var payload = parts[1];
+            var remainder = payload.Length % 4;
+            if (remainder > 0) payload += new string('=', 4 - remainder);
+
+            var json = Encoding.UTF8.GetString(Convert.FromBase64String(payload));
+            using var doc = JsonDocument.Parse(json);
+
+            if (doc.RootElement.TryGetProperty("sub", out var sub))
+                return Guid.TryParse(sub.GetString(), out var id) ? id : Guid.Empty;
+        }
+        catch { /* Token malformado: ignorar */ }
+        return Guid.Empty;
     }
 
     private sealed record AuthTokenResponse(string AccessToken, string RefreshToken, DateTime ExpiresAt);

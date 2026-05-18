@@ -1,0 +1,77 @@
+@page "/"
+@attribute [Authorize]
+@inject MobileDashboardService DashboardService
+@inject NavigationManager Navigation
+
+@using SharedUI.Components
+@using MobileApp.Services
+
+<PageTitle>SharedSubscriptions</PageTitle>
+
+<div class="dashboard">
+    <header class="dashboard__header">
+        <h1 class="dashboard__title">Mis grupos</h1>
+    </header>
+
+    @if (isLoading)
+    {
+        <div class="dashboard__loading" role="status">
+            <span class="spinner"></span>
+            <span>Cargando...</span>
+        </div>
+    }
+    else if (groups.Count == 0)
+    {
+        <div class="dashboard__empty">
+            <div class="dashboard__empty-icon" aria-hidden="true">📦</div>
+            <p>Aún no perteneces a ningún grupo.</p>
+        </div>
+    }
+    else
+    {
+        <div class="dashboard__groups">
+            @foreach (var data in groups)
+            {
+                <section class="group-section">
+                    <GroupPanel Group="data.Group"
+                                Members="data.Group.Members"
+                                IsAdmin="data.IsAdmin"
+                                OnAddMember="_ => {}"
+                                OnRemoveMember="_ => {}" />
+
+                    @if (data.Subscriptions.Count > 0)
+                    {
+                        <div class="group-section__subs">
+                            @foreach (var sub in data.Subscriptions)
+                            {
+                                <div @onclick="() => Navigation.NavigateTo($\"/grupo/{data.Group.Id}\")"
+                                     style="cursor:pointer">
+                                    <SubscriptionCard Subscription="sub"
+                                                      IsAdmin="data.IsAdmin"
+                                                      OnConfirmPayment="_ => {}" />
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <button class="btn-outline"
+                            @onclick="() => Navigation.NavigateTo($\"/grupo/{data.Group.Id}\")">
+                        Ver detalle →
+                    </button>
+                </section>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<GroupDashboardData> groups = [];
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await DashboardService.GetDashboardDataAsync();
+        groups = result.ToList();
+        isLoading = false;
+    }
+}

@@ -1,0 +1,126 @@
+@page "/grupo/{GroupId:guid}"
+@attribute [Authorize]
+@inject MobileGroupService GroupService
+@inject NavigationManager Navigation
+
+@using SharedUI.Components
+@using MobileApp.Services
+
+<PageTitle>Detalle del grupo</PageTitle>
+
+@if (isLoading)
+{
+    <div class="group-detail__loading" role="status">
+        <span class="spinner"></span>
+        <span>Cargando grupo...</span>
+    </div>
+}
+else if (detail is null)
+{
+    <div class="group-detail__error">
+        <p>No se pudo cargar el grupo.</p>
+        <button class="btn-primary" @onclick="() => Navigation.NavigateTo(\"/\")">
+            Volver al inicio
+        </button>
+    </div>
+}
+else
+{
+    <div class="group-detail">
+        <header class="group-detail__header">
+            <button class="group-detail__back" @onclick="() => Navigation.NavigateTo(\"/\")"
+                    aria-label="Volver">
+                ← Volver
+            </button>
+            <h1 class="group-detail__title">@detail.Group.Name</h1>
+        </header>
+
+        <!-- Panel del grupo con miembros y semáforos -->
+        <GroupPanel Group="detail.Group"
+                    Members="detail.Group.Members"
+                    IsAdmin="detail.IsAdmin"
+                    OnAddMember="HandleAddMemberAsync"
+                    OnRemoveMember="HandleRemoveMemberAsync" />
+
+        <!-- Suscripciones del grupo -->
+        @if (detail.Subscriptions.Count > 0)
+        {
+            <section class="group-detail__subs">
+                <h2 class="group-detail__section-title">Suscripciones activas</h2>
+                @foreach (var sub in detail.Subscriptions)
+                {
+                    <SubscriptionCard Subscription="sub"
+                                      IsAdmin="detail.IsAdmin"
+                                      OnConfirmPayment="HandleConfirmPaymentAsync" />
+                }
+            </section>
+        }
+
+        @if (!string.IsNullOrEmpty(actionMessage))
+        {
+            <div class="action-message @(actionIsError ? "action-message--error" : "action-message--ok")"
+                 role="status">
+                @actionMessage
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+
+    private GroupDetailResult? detail;
+    private bool isLoading = true;
+    private string? actionMessage;
+    private bool actionIsError;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        isLoading = true;
+        detail = await GroupService.GetGroupDetailAsync(GroupId);
+        isLoading = false;
+    }
+
+    private async Task HandleAddMemberAsync(string email)
+    {
+        var ok = await GroupService.AddMemberAsync(GroupId, email);
+        if (ok)
+        {
+            actionIsError = false;
+            actionMessage = $"Miembro {email} añadido correctamente.";
+            await LoadAsync();
+        }
+        else
+        {
+            actionIsError = true;
+            actionMessage = "No se pudo añadir el miembro.";
+        }
+    }
+
+    private async Task HandleRemoveMemberAsync(Guid memberId)
+    {
+        var ok = await GroupService.RemoveMemberAsync(GroupId, memberId);
+        if (ok)
+        {
+            actionIsError = false;
+            actionMessage = "Miembro eliminado.";
+            await LoadAsync();
+        }
+        else
+        {
+            actionIsError = true;
+            actionMessage = "No se pudo eliminar el miembro.";
+        }
+    }
+
+    private Task HandleConfirmPaymentAsync(Guid subscriptionId)
+    {
+        Navigation.NavigateTo($"/confirmar-pago/{subscriptionId}");
+        return Task.CompletedTask;
+    }
+}

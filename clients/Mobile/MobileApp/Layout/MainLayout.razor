@@ -1,8 +1,41 @@
 @namespace MobileApp.Layout
 @inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject MobileAuthService AuthService
 
 <div class="mobile-layout">
     <main class="mobile-layout__content">
         @Body
     </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="Navegación principal">
+        <a href="/" class="bottom-nav__item @(IsActive("/") ? "active" : "")">
+            <span class="bottom-nav__icon" aria-hidden="true">🏠</span>
+            <span class="bottom-nav__label">Inicio</span>
+        </a>
+        <a href="/mis-deudas" class="bottom-nav__item @(IsActive("/mis-deudas") ? "active" : "")">
+            <span class="bottom-nav__icon" aria-hidden="true">💳</span>
+            <span class="bottom-nav__label">Deudas</span>
+        </a>
+        <button class="bottom-nav__item bottom-nav__item--button" @onclick="HandleLogoutAsync">
+            <span class="bottom-nav__icon" aria-hidden="true">🚪</span>
+            <span class="bottom-nav__label">Salir</span>
+        </button>
+    </nav>
 </div>
+
+@code {
+    private bool IsActive(string path)
+    {
+        var current = "/" + Navigation.ToBaseRelativePath(Navigation.Uri).TrimStart('/');
+        if (path == "/")
+            return current == "/";
+        return current.StartsWith(path, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private async Task HandleLogoutAsync()
+    {
+        await AuthService.LogoutAsync();
+        Navigation.NavigateTo("/login", replace: true);
+    }
+}

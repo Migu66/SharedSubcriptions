@@ -1,0 +1,137 @@
+@page "/mis-deudas"
+@attribute [Authorize]
+@inject MobilePaymentService PaymentService
+
+@using MobileApp.Services
+
+<PageTitle>Mis deudas — SharedSubscriptions</PageTitle>
+
+<div class="my-debts">
+    <header class="my-debts__header">
+        <h1 class="my-debts__title">Mis deudas pendientes</h1>
+    </header>
+
+    @if (isLoading)
+    {
+        <div class="my-debts__loading" role="status">
+            <span class="spinner"></span>
+            <span>Cargando deudas...</span>
+        </div>
+    }
+    else if (debts.Count == 0)
+    {
+        <div class="my-debts__empty">
+            <div class="my-debts__empty-icon" aria-hidden="true">✓</div>
+            <p>¡Todo pagado! No tienes deudas pendientes.</p>
+        </div>
+    }
+    else
+    {
+        @if (!string.IsNullOrEmpty(actionError))
+        {
+            <div class="alert alert--error" role="alert">@actionError</div>
+        }
+        @if (!string.IsNullOrEmpty(actionSuccess))
+        {
+            <div class="alert alert--success" role="status">@actionSuccess</div>
+        }
+
+        <div class="my-debts__list">
+            @foreach (var debt in debts)
+            {
+                <article class="debt-card @(debt.Status == "Red" ? "debt-card--overdue" : "")">
+                    <div class="debt-card__info">
+                        <div class="debt-card__main">
+                            <span class="debt-card__service">@debt.ServiceName</span>
+                            <span class="debt-card__amount">
+                                @debt.Amount.ToString("F2") @debt.Currency
+                            </span>
+                        </div>
+                        <div class="debt-card__meta">
+                            <span>Acreedor: <strong>@debt.CreditorEmail</strong></span>
+                            <span>@debt.CreatedAt.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        @if (debt.Status == "Red")
+                        {
+                            <span class="debt-card__badge debt-card__badge--overdue" role="status">
+                                Vencida
+                            </span>
+                        }
+                    </div>
+
+                    <div class="debt-card__actions">
+                        <button class="btn-primary"
+                                disabled="@(processingDebtId == debt.Id)"
+                                @onclick="() => HandleStripePaymentAsync(debt.Id)">
+                            @(processingDebtId == debt.Id ? "Procesando..." : "Pagar online")
+                        </button>
+
+                        <button class="btn-secondary"
+                                disabled="@(processingDebtId == debt.Id)"
+                                @onclick="() => HandleManualSettleAsync(debt.Id)">
+                            Marcar como pagado
+                        </button>
+                    </div>
+                </article>
+            }
+        </div>
+
+        <div class="my-debts__summary">
+            <span>Total pendiente:</span>
+            <strong>@debts.Sum(d => d.Amount).ToString("F2") €</strong>
+        </div>
+    }
+</div>
+
+@code {
+    private List<DebtDto> debts = [];
+    private bool isLoading = true;
+    private Guid? processingDebtId;
+    private string? actionError;
+    private string? actionSuccess;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await PaymentService.GetPendingDebtsAsync();
+        debts = result.ToList();
+        isLoading = false;
+    }
+
+    private async Task HandleStripePaymentAsync(Guid debtId)
+    {
+        processingDebtId = debtId;
+        actionError = actionSuccess = null;
+
+        var url = await PaymentService.CreateStripeCheckoutAsync(debtId);
+        processingDebtId = null;
+
+        if (string.IsNullOrEmpty(url))
+        {
+            actionError = "No se pudo iniciar el pago. Inténtalo de nuevo.";
+            return;
+        }
+
+        // Abrir la URL de Stripe en el navegador externo del dispositivo
+        await Launcher.OpenAsync(new Uri(url));
+    }
+
+    private async Task HandleManualSettleAsync(Guid debtId)
+    {
+        processingDebtId = debtId;
+        actionError = actionSuccess = null;
+
+        var ok = await PaymentService.SettleDebtManuallyAsync(debtId);
+        processingDebtId = null;
+
+        if (ok)
+        {
+            actionSuccess = "Deuda marcada como pagada.";
+            var result = await PaymentService.GetPendingDebtsAsync();
+            debts = result.ToList();
+        }
+        else
+        {
+            actionError = "No se pudo marcar la deuda como pagada.";
+        }
+    }
+}

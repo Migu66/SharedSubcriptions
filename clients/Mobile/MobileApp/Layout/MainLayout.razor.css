@@ -1,0 +1,67 @@
+.mobile-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    background: #f8f9fa;
+}
+
+.mobile-layout__content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ── Barra de navegación inferior ────────────────────────────────────── */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #1a1a2e;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 0;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    flex-shrink: 0;
+}
+
+.bottom-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    padding: 6px 16px;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+    min-width: 60px;
+}
+
+.bottom-nav__item--button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.bottom-nav__item:hover,
+.bottom-nav__item:focus-visible {
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.06);
+    outline: none;
+}
+
+.bottom-nav__item.active {
+    color: #e94560;
+}
+
+.bottom-nav__icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.bottom-nav__label {
+    font-size: 11px;
+    font-weight: 500;
+}

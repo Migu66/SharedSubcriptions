@@ -47,6 +47,11 @@ public static class MauiProgram
             client.BaseAddress = new Uri("http://10.0.2.2:5000");
         });
 
+        // Servicios de negocio
+        builder.Services.AddTransient<MobileDashboardService>();
+        builder.Services.AddTransient<MobileGroupService>();
+        builder.Services.AddTransient<MobilePaymentService>();
+
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
