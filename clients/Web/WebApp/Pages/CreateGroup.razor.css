@@ -1,0 +1,110 @@
+.create-group {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.create-group__card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 520px;
+}
+
+.create-group__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 0.35rem;
+}
+
+.create-group__subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0 0 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-input {
+    padding: 0.6rem 0.85rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #e94560;
+    box-shadow: 0 0 0 3px rgba(233,69,96,0.1);
+}
+
+.error-alert {
+    background: #fff0f3;
+    border: 1px solid #e94560;
+    color: #c0392b;
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.create-group__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.btn-primary {
+    background-color: #e94560;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #c0392b;
+}
+
+.btn-primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: none;
+    border: 1px solid #dee2e6;
+    color: #495057;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.btn-secondary:hover {
+    border-color: #adb5bd;
+}

@@ -596,7 +596,7 @@ Crear el servicio `AuthService` que gestiona el ciclo de vida del token JWT: log
 
 Crear la página `Dashboard` que muestra todos los grupos del usuario autenticado usando el componente `GroupPanel` de `SharedUI`. Para cada grupo muestra las suscripciones activas con `SubscriptionCard` y el estado del semáforo de cada miembro con `PaymentStatusBadge`. La página se actualiza en tiempo real mediante SignalR cuando cambia el estado de un pago.
 
-#### Fase 10.4 — Gestión de grupos
+#### Fase 10.4 — Gestión de grupos ----
 
 Crear la página `GroupDetail` que muestra el detalle completo de un grupo. Incluye el formulario para añadir miembros por email, el botón para eliminar miembros (visible solo para el administrador) y la lista de suscripciones del grupo. Crear la página `CreateGroup` con el formulario de creación que llama a `POST /api/groups`.
 

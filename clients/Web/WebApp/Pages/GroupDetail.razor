@@ -1,0 +1,181 @@
+@page "/grupos/{GroupId:guid}"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject GroupService GroupService
+@inject NavigationManager Navigation
+
+<PageTitle>Detalle del grupo — SharedSubscriptions</PageTitle>
+
+@if (isLoading)
+{
+    <div class="group-detail__loading" role="status">
+        <span class="spinner"></span>
+        <span>Cargando grupo...</span>
+    </div>
+}
+else if (detail is null)
+{
+    <div class="group-detail__error">
+        <p>No se encontró el grupo o no tienes permiso para verlo.</p>
+        <a href="/" class="btn-secondary">Volver al inicio</a>
+    </div>
+}
+else
+{
+    <div class="group-detail">
+        <header class="group-detail__header">
+            <div>
+                <a href="/" class="group-detail__back">← Volver</a>
+                <h1 class="group-detail__title">@detail.Group.Name</h1>
+            </div>
+            @if (detail.IsAdmin)
+            {
+                <a href="/grupos/@GroupId/suscripciones/nueva" class="btn-primary">+ Nueva suscripción</a>
+            }
+        </header>
+
+        <!-- Panel del grupo con miembros y semáforos -->
+        <GroupPanel Group="detail.Group"
+                    IsAdmin="detail.IsAdmin"
+                    OnAddMember="ShowAddMemberForm"
+                    OnRemoveMember="HandleRemoveMemberAsync" />
+
+        <!-- Formulario inline para añadir miembro (solo admin) -->
+        @if (showAddMemberForm && detail.IsAdmin)
+        {
+            <div class="group-detail__add-member-form">
+                <h3>Añadir miembro al grupo</h3>
+                <EditForm Model="addMemberModel" OnValidSubmit="HandleAddMemberAsync" FormName="add-member">
+                    <DataAnnotationsValidator />
+                    <div class="add-member__row">
+                        <div class="form-group">
+                            <label for="inviteeEmail">Email del nuevo miembro</label>
+                            <InputText id="inviteeEmail"
+                                       @bind-Value="addMemberModel.Email"
+                                       placeholder="email@ejemplo.com"
+                                       type="email"
+                                       class="form-input" />
+                            <ValidationMessage For="() => addMemberModel.Email" />
+                        </div>
+                        <div class="add-member__buttons">
+                            <button type="submit" class="btn-primary" disabled="@isAddingMember">
+                                @(isAddingMember ? "Añadiendo..." : "Añadir")
+                            </button>
+                            <button type="button" class="btn-secondary" @onclick="HideAddMemberForm">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(addMemberError))
+                    {
+                        <div class="error-alert" role="alert">@addMemberError</div>
+                    }
+                    @if (!string.IsNullOrEmpty(addMemberSuccess))
+                    {
+                        <div class="success-alert" role="status">@addMemberSuccess</div>
+                    }
+                </EditForm>
+            </div>
+        }
+
+        <!-- Suscripciones del grupo -->
+        <section class="group-detail__subscriptions">
+            <h2 class="group-detail__section-title">Suscripciones</h2>
+            @if (detail.Subscriptions.Count == 0)
+            {
+                <p class="group-detail__empty-subs">
+                    No hay suscripciones en este grupo.
+                    @if (detail.IsAdmin)
+                    {
+                        <a href="/grupos/@GroupId/suscripciones/nueva">Añadir la primera</a>
+                    }
+                </p>
+            }
+            else
+            {
+                <div class="group-detail__subs-grid">
+                    @foreach (var sub in detail.Subscriptions)
+                    {
+                        <SubscriptionCard Subscription="sub"
+                                          IsAdmin="detail.IsAdmin"
+                                          OnConfirmPayment="(id) => Navigation.NavigateTo($"/pagos/confirmar/{id}")" />
+                    }
+                </div>
+            }
+        </section>
+    </div>
+}
+
+@code {
+    [Parameter] public Guid GroupId { get; set; }
+
+    private GroupDetailResult? detail;
+    private bool isLoading = true;
+
+    // Estado del formulario de añadir miembro
+    private bool showAddMemberForm;
+    private bool isAddingMember;
+    private string? addMemberError;
+    private string? addMemberSuccess;
+    private readonly AddMemberModel addMemberModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        isLoading = true;
+        detail = await GroupService.GetGroupDetailAsync(GroupId);
+        isLoading = false;
+    }
+
+    private void ShowAddMemberForm()
+    {
+        showAddMemberForm = true;
+        addMemberError = null;
+        addMemberSuccess = null;
+        addMemberModel.Email = string.Empty;
+    }
+
+    private void HideAddMemberForm()
+    {
+        showAddMemberForm = false;
+    }
+
+    private async Task HandleAddMemberAsync()
+    {
+        isAddingMember = true;
+        addMemberError = null;
+        addMemberSuccess = null;
+
+        var ok = await GroupService.AddMemberAsync(GroupId, addMemberModel.Email);
+
+        if (ok)
+        {
+            addMemberSuccess = $"{addMemberModel.Email} ha sido añadido al grupo.";
+            addMemberModel.Email = string.Empty;
+            await LoadAsync(); // Refresca la lista de miembros
+        }
+        else
+        {
+            addMemberError = "No se pudo añadir el miembro. Comprueba el email e inténtalo de nuevo.";
+        }
+
+        isAddingMember = false;
+    }
+
+    private async Task HandleRemoveMemberAsync(Guid memberId)
+    {
+        var ok = await GroupService.RemoveMemberAsync(GroupId, memberId);
+        if (ok) await LoadAsync();
+    }
+
+    private sealed class AddMemberModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El email es obligatorio.")]
+        [System.ComponentModel.DataAnnotations.EmailAddress(ErrorMessage = "Introduce un email válido.")]
+        public string Email { get; set; } = string.Empty;
+    }
+}

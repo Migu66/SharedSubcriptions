@@ -1,0 +1,71 @@
+@page "/grupos/nuevo"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@inject GroupService GroupService
+@inject NavigationManager Navigation
+
+<PageTitle>Nuevo grupo — SharedSubscriptions</PageTitle>
+
+<div class="create-group">
+    <div class="create-group__card">
+        <h1 class="create-group__title">Crear nuevo grupo</h1>
+        <p class="create-group__subtitle">Un grupo agrupa a las personas que comparten una o varias suscripciones.</p>
+
+        <EditForm Model="model" OnValidSubmit="HandleSubmitAsync" FormName="create-group">
+            <DataAnnotationsValidator />
+
+            <div class="form-group">
+                <label for="name">Nombre del grupo</label>
+                <InputText id="name"
+                           @bind-Value="model.Name"
+                           placeholder="Ej: Familia García, Amigos del piso..."
+                           class="form-input" />
+                <ValidationMessage For="() => model.Name" />
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="error-alert" role="alert">@errorMessage</div>
+            }
+
+            <div class="create-group__actions">
+                <a href="/" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-primary" disabled="@isLoading">
+                    @(isLoading ? "Creando..." : "Crear grupo")
+                </button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private readonly CreateGroupModel model = new();
+    private string? errorMessage;
+    private bool isLoading;
+
+    private async Task HandleSubmitAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        var groupId = await GroupService.CreateGroupAsync(model.Name);
+
+        if (groupId.HasValue)
+        {
+            Navigation.NavigateTo($"/grupos/{groupId.Value}");
+        }
+        else
+        {
+            errorMessage = "No se pudo crear el grupo. Inténtalo de nuevo.";
+            isLoading = false;
+        }
+    }
+
+    private sealed class CreateGroupModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "El nombre es obligatorio.")]
+        [System.ComponentModel.DataAnnotations.MinLength(3, ErrorMessage = "El nombre debe tener al menos 3 caracteres.")]
+        [System.ComponentModel.DataAnnotations.MaxLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres.")]
+        public string Name { get; set; } = string.Empty;
+    }
+}
